@@ -412,7 +412,7 @@
     </main>
 
     <script>
-        // ВАШИ ФОТО ПО КАТАЛОГАМ
+        // ВАШИ ФОТО ПО КАТАЛОГАМ - БЕЗ ИЗМЕНЕНИЙ, В ТОМ ПОРЯДКЕ КАК ВЫ ДОБАВИЛИ
         const catalogs = [
             {
                 id: 'girls',
@@ -464,30 +464,30 @@
         let currentModalIndex = 0;
         let currentFilter = 'all';
 
-        // Получить все фото
+        // Получить все фото (БЕЗ ПЕРЕМЕШИВАНИЯ для раздела "Все")
         function getAllImages() {
             const all = [];
-            catalogs.forEach(catalog => {
-                catalog.images.forEach((url, index) => {
-                    all.push({
-                        url: url,
-                        catalog: catalog.name,
-                        catalogId: catalog.id,
-                        icon: catalog.icon,
-                        id: `${catalog.id}-${index}`
-                    });
+            // Сначала все фото девочек
+            catalogs[0].images.forEach((url, index) => {
+                all.push({
+                    url: url,
+                    catalog: catalogs[0].name,
+                    catalogId: catalogs[0].id,
+                    icon: catalogs[0].icon,
+                    order: `girls-${index}`
                 });
             });
-            return shuffleArray(all);
-        }
-
-        // Перемешать
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+            // Потом все фото мемов
+            catalogs[1].images.forEach((url, index) => {
+                all.push({
+                    url: url,
+                    catalog: catalogs[1].name,
+                    catalogId: catalogs[1].id,
+                    icon: catalogs[1].icon,
+                    order: `memes-${index}`
+                });
+            });
+            return all; // БЕЗ ПЕРЕМЕШИВАНИЯ
         }
 
         // Кнопки каталогов
@@ -546,15 +546,17 @@
             currentFilter = filter;
 
             if (filter === 'all') {
-                currentImages = getAllImages();
+                // Для раздела "Все" - показываем все фото подряд
+                currentImages = getAllImages(); // БЕЗ ПЕРЕМЕШИВАНИЯ
             } else {
                 const catalog = catalogs.find(c => c.id === filter);
+                // Для отдельных каталогов - ТОЧНО КАК ВЫ ДОБАВИЛИ, БЕЗ ПЕРЕМЕШИВАНИЯ
                 currentImages = catalog.images.map((url, index) => ({
                     url: url,
                     catalog: catalog.name,
                     catalogId: catalog.id,
                     icon: catalog.icon,
-                    id: `${catalog.id}-${index}`
+                    order: `${catalog.id}-${index}`
                 }));
             }
 

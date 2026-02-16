@@ -3,72 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Флаги стран</title>
+    <title>🌍 Путешествие по странам</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ff4e4e 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
+            padding: 20px;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         h1 {
-            color: #333;
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeInDown 1s ease;
         }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            text-align: center;
+            animation: fadeInUp 1s ease;
+        }
+
         .flag-container {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             flex-wrap: wrap;
             justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
         .flag-button {
             display: inline-flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            font-size: 5rem; /* Размер флага-эмодзи */
-            background-color: white;
-            border: 3px solid #ccc;
-            border-radius: 15px;
+            padding: 30px 20px;
+            font-size: 5rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
             text-decoration: none;
             color: #333;
-            transition: transform 0.2s, border-color 0.2s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            min-width: 150px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            min-width: 200px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease;
+            animation-fill-mode: both;
         }
+
+        .flag-button:nth-child(1) { animation-delay: 0.2s; }
+        .flag-button:nth-child(2) { animation-delay: 0.4s; }
+        .flag-button:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flag-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .flag-button:hover::before {
+            left: 100%;
+        }
+
         .flag-button:hover {
-            transform: scale(1.05);
-            border-color: #007bff;
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            border-color: #fff;
         }
+
+        .flag-button:active {
+            transform: translateY(-5px) scale(1.02);
+        }
+
         .flag-button span {
-            font-size: 1.2rem;
-            margin-top: 10px;
+            font-size: 1.4rem;
+            margin-top: 15px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flag-emoji {
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+        }
+
+        /* Стили для статистики при наведении */
+        .flag-stats {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px;
+            font-size: 0.9rem;
+            border-radius: 0 0 20px 20px;
+            transition: bottom 0.3s ease;
+        }
+
+        .flag-button:hover .flag-stats {
+            bottom: 0;
+        }
+
+        /* Информационная панель */
+        .info-panel {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 50px;
+            color: white;
+            max-width: 600px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .info-panel h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .info-panel p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .info-panel .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .info-panel .stat-item {
+            text-align: center;
+        }
+
+        .info-panel .stat-number {
+            font-size: 1.8rem;
             font-weight: bold;
+            color: #ffd700;
+        }
+
+        .info-panel .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .flag-button {
+                font-size: 4rem;
+                min-width: 150px;
+                padding: 20px;
+            }
+
+            .flag-button span {
+                font-size: 1.1rem;
+            }
+
+            .info-panel {
+                margin-top: 30px;
+                padding: 15px;
+            }
+
+            .info-panel .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .flag-container {
+                gap: 15px;
+            }
+
+            .flag-button {
+                font-size: 3rem;
+                min-width: 120px;
+            }
+        }
+
+        /* Счетчик посещений (локальное хранилище) */
+        .visit-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            z-index: 1000;
+        }
+
+        /* Кнопка смены темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        /* Темная тема */
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        body.dark-theme .flag-button {
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+            border-color: #444;
+        }
+
+        body.dark-theme .flag-button span {
+            color: white;
+        }
+
+        body.dark-theme h1,
+        body.dark-theme .subtitle {
+            color: #f0f0f0;
         }
     </style>
 </head>
 <body>
-    <h1>Выбери страну по флагу</h1>
+    <div class="visit-counter" id="visitCounter">👁️ Посещений: 1</div>
+    <div class="theme-toggle" id="themeToggle">🌙 Тёмная тема</div>
+
+    <h1>🌍 Путешествие по странам</h1>
+    <div class="subtitle">Нажми на флаг, чтобы узнать больше о стране</div>
+
     <div class="flag-container">
         <!-- Флаг Габона (ведет на index.html) -->
-        <a href="index.html" class="flag-button">
-            <span>🇬🇦</span>
+        <a href="index.html" class="flag-button" id="gabonBtn">
+            <span class="flag-emoji">🇬🇦</span>
             <span>Габон</span>
+            <div class="flag-stats">
+                👥 2.3 млн • 🏝️ 9 стран
+            </div>
         </a>
+
         <!-- Флаг Армении (ведет на armenia.html) -->
-        <a href="armenia.html" class="flag-button">
-            <span>🇦🇲</span>
+        <a href="armenia.html" class="flag-button" id="armeniaBtn">
+            <span class="flag-emoji">🇦🇲</span>
             <span>Армения</span>
+            <div class="flag-stats">
+                👥 3 млн • 🏔️ 29.7k км²
+            </div>
         </a>
+
         <!-- Флаг России (ведет на rusha.html) -->
-        <a href="rusha.html" class="flag-button">
-            <span>🇷🇺</span>
+        <a href="rusha.html" class="flag-button" id="russiaBtn">
+            <span class="flag-emoji">🇷🇺</span>
             <span>Россия</span>
+            <div class="flag-stats">
+                👥 146 млн • 🌍 17.1M км²
+            </div>
         </a>
     </div>
+
+    <div class="info-panel">
+        <h3>✨ Интересные факты</h3>
+        <p id="randomFact">Нажми на любой флаг, чтобы отправиться в виртуальное путешествие!</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">страны</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalClicks">0</div>
+                <div class="stat-label">кликов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">🌍</div>
+                <div class="stat-label">континента</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Счетчик посещений (локальное хранилище)
+        if (localStorage.getItem('visitCount')) {
+            let count = parseInt(localStorage.getItem('visitCount')) + 1;
+            localStorage.setItem('visitCount', count);
+            document.getElementById('visitCounter').textContent = `👁️ Посещений: ${count}`;
+        } else {
+            localStorage.setItem('visitCount', '1');
+        }
+
+        // Счетчик кликов
+        let clickCount = 0;
+        const totalClicksEl = document.getElementById('totalClicks');
+
+        function updateClickCount() {
+            clickCount++;
+            totalClicksEl.textContent = clickCount;
+        }
+
+        // Добавляем обработчики кликов на кнопки
+        document.getElementById('gabonBtn').addEventListener('click', updateClickCount);
+        document.getElementById('armeniaBtn').addEventListener('click', updateClickCount);
+        document.getElementById('russiaBtn').addEventListener('click', updateClickCount);
+
+        // Массив интересных фактов
+        const facts = [
+            "Габон — одна из самых богатых природными ресурсами стран Африки!",
+            "Армения — первая страна, принявшая христианство как государственную религию в 301 году.",
+            "Россия — самая большая страна в мире, занимающая 1/8 часть суши!",
+            "В Армении находится древнейшее винодельческое хозяйство мира (6100 лет до н.э.)",
+            "Байкал в России — самое глубокое озеро планеты (1642 метра).",
+            "Габон — рай для экологов: 88% территории покрывают тропические леса!",
+            "В России 11 часовых поясов — больше, чем в любой другой стране.",
+            "Армянский алфавит создан в 405 году и почти не изменился за 1600 лет."
+        ];
+
+        // Меняем факт каждые 10 секунд
+        setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            document.getElementById('randomFact').textContent = facts[randomIndex];
+        }, 10000);
+
+        // Смена темы
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            if (document.body.classList.contains('dark-theme')) {
+                themeToggle.textContent = '☀️ Светлая тема';
+            } else {
+                themeToggle.textContent = '🌙 Тёмная тема';
+            }
+        });
+
+        // Анимация при наведении на кнопки
+        const buttons = document.querySelectorAll('.flag-button');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-10px) scale(1.05)';
+            });
+
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Эффект печати для заголовка
+        const title = document.querySelector('h1');
+        const originalText = title.textContent;
+        title.textContent = '';
+
+        let i = 0;
+        const typeWriter = setInterval(() => {
+            if (i < originalText.length) {
+                title.textContent += originalText.charAt(i);
+                i++;
+            } else {
+                clearInterval(typeWriter);
+            }
+        }, 100);
+    </script>
 </body>
 </html>

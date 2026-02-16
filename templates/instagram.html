@@ -561,7 +561,7 @@
 
         function getAllImages() {
             const all = [];
-            catalogs.forEach(catalog => {
+            catalogs.forEach(catalog => {                    // Проходим по ВСЕМ каталогам
                 catalog.images.forEach((url, index) => {
                     if (url && url.trim() !== '') {
                         all.push({
@@ -573,7 +573,7 @@
                     }
                 });
             });
-            return shuffleArray(all);
+            return shuffleArray(all);                         // Возвращаем все фото перемешанные
         }
 
         function renderButtons() {
@@ -586,7 +586,6 @@
             allBtn.innerHTML = `📸 Все <span class="count">${getAllImages().length}</span>`;
             allBtn.onclick = () => filterCatalog('all');
             container.appendChild(allBtn);
-
             // Кнопки для каждого каталога
             catalogs.forEach(catalog => {
                 const btn = document.createElement('button');

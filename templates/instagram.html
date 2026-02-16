@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея | Мемы, Путешествия и Девочки</title>
+    <title>Галерея | Девочки и Мемы</title>
     <style>
         * {
             margin: 0;
@@ -12,21 +12,20 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
             min-height: 100vh;
         }
 
         /* Шапка */
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 16px 0;
+            background: #000;
+            color: white;
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            border-bottom: 3px solid #333;
         }
 
         .header-content {
@@ -35,145 +34,131 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 24px;
+            padding: 0 20px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
         }
 
         .logo {
             font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #4158D0 0%, #C850C0 100%);
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff4d6d, #4ecdc4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
-        /* Навигация по каталогам */
-        .catalog-nav {
+        /* Кнопки каталогов */
+        .catalog-buttons {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .catalog-btn {
-            padding: 12px 24px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 30px;
-            background: white;
-            color: #4158D0;
-            font-weight: 600;
-            font-size: 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 18px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: all 0.3s;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .catalog-btn i {
-            font-size: 18px;
+        .catalog-btn.girls {
+            background: linear-gradient(135deg, #ff4d6d, #ff8c9f);
+        }
+
+        .catalog-btn.memes {
+            background: linear-gradient(135deg, #4ecdc4, #45b7aa);
+        }
+
+        .catalog-btn.all {
+            background: linear-gradient(135deg, #667eea, #764ba2);
         }
 
         .catalog-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(65, 88, 208, 0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
         }
 
         .catalog-btn.active {
-            background: linear-gradient(135deg, #4158D0 0%, #C850C0 100%);
-            color: white;
+            transform: scale(1.05);
+            border: 2px solid white;
         }
 
-        .catalog-btn.memes {
-            background: #ff6b6b;
-            color: white;
-        }
-
-        .catalog-btn.travel {
-            background: #4ecdc4;
-            color: white;
-        }
-
-        .catalog-btn.girls {
-            background: #ff85b3;
-            color: white;
-        }
-
-        .catalog-count {
+        .catalog-btn .count {
             background: rgba(255,255,255,0.2);
             padding: 2px 8px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 14px;
+            margin-left: 8px;
         }
 
         /* Статистика */
         .stats {
             max-width: 1200px;
-            margin: 30px auto 0;
-            padding: 0 24px;
+            margin: 30px auto 20px;
+            padding: 0 20px;
             display: flex;
             gap: 20px;
             color: white;
-            flex-wrap: wrap;
-            justify-content: center;
         }
 
-        .stat-item {
-            background: rgba(255,255,255,0.15);
+        .stat-card {
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             padding: 15px 25px;
-            border-radius: 20px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             gap: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
             flex: 1;
-            min-width: 150px;
         }
 
         .stat-icon {
-            font-size: 28px;
+            font-size: 30px;
         }
 
-        .stat-info h3 {
+        .stat-info h4 {
             font-size: 14px;
-            font-weight: 400;
-            opacity: 0.9;
+            opacity: 0.8;
         }
 
         .stat-info p {
             font-size: 24px;
-            font-weight: 700;
+            font-weight: bold;
         }
 
-        /* Сетка галереи */
+        /* Галерея */
         .gallery {
             max-width: 1200px;
-            margin: 30px auto;
+            margin: 20px auto 40px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 0 24px;
+            gap: 15px;
+            padding: 0 20px;
         }
 
-        /* Карточка с изображением */
+        /* Карточка */
         .gallery-item {
             position: relative;
             width: 100%;
             aspect-ratio: 1 / 1;
             overflow: hidden;
             cursor: pointer;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            background: linear-gradient(45deg, #f3f3f3, #ffffff);
+            border-radius: 12px;
+            border: 2px solid #333;
+            transition: all 0.3s;
+            background: #2d2d2d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .gallery-item:hover {
-            transform: scale(1.03) translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: scale(1.02);
+            border-color: #666;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .gallery-item img {
@@ -181,41 +166,28 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.5s ease;
         }
 
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Каталог-бейдж */
-        .catalog-badge {
+        /* Бейдж */
+        .badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 8px 16px;
+            top: 10px;
+            right: 10px;
+            padding: 6px 15px;
             border-radius: 30px;
             font-size: 13px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+            color: white;
             z-index: 1;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .badge-memes {
-            background: linear-gradient(135deg, #ff6b6b, #ee5253);
-            color: white;
+        .badge.girls {
+            background: linear-gradient(135deg, #ff4d6d, #ff8c9f);
         }
 
-        .badge-travel {
-            background: linear-gradient(135deg, #4ecdc4, #45b7d1);
-            color: white;
-        }
-
-        .badge-girls {
-            background: linear-gradient(135deg, #ff85b3, #ff6b95);
-            color: white;
+        .badge.memes {
+            background: linear-gradient(135deg, #4ecdc4, #45b7aa);
         }
 
         /* Модальное окно */
@@ -226,12 +198,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.98);
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
         }
 
         .modal.active {
@@ -240,82 +210,76 @@
 
         .modal-content {
             position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
+            max-width: 90%;
+            max-height: 90%;
         }
 
         .modal img {
             max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            max-height: 85vh;
+            border-radius: 10px;
+            border: 3px solid #333;
         }
 
-        .modal-catalog {
+        .modal-badge {
             position: absolute;
-            top: -45px;
+            top: -40px;
             left: 0;
             padding: 8px 20px;
             border-radius: 30px;
             color: white;
-            font-size: 14px;
-            font-weight: 600;
+            font-weight: bold;
         }
 
         .modal-close {
             position: absolute;
-            top: -45px;
+            top: -40px;
             right: 0;
-            background: rgba(255,255,255,0.2);
-            color: white;
             width: 40px;
             height: 40px;
+            background: #333;
+            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .modal-close:hover {
-            background: rgba(255,255,255,0.3);
+            background: #ff4d6d;
             transform: rotate(90deg);
         }
 
-        /* Навигация в модалке */
         .modal-nav {
             position: absolute;
-            bottom: -60px;
+            bottom: -50px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             gap: 20px;
-            background: rgba(255,255,255,0.1);
-            padding: 10px 20px;
+            background: #333;
+            padding: 8px 25px;
             border-radius: 40px;
-            backdrop-filter: blur(10px);
         }
 
         .nav-btn {
             background: none;
             border: none;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
-            width: 45px;
-            height: 45px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+            background: #444;
+            transition: all 0.3s;
         }
 
         .nav-btn:hover:not(:disabled) {
-            background: rgba(255,255,255,0.2);
+            background: #ff4d6d;
             transform: scale(1.1);
         }
 
@@ -324,44 +288,28 @@
             cursor: not-allowed;
         }
 
-        /* Пустое состояние */
+        /* Инфо если нет фото */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 60px 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            padding: 60px;
             color: white;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
         }
 
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 20px;
-            opacity: 0.7;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
+        @media (max-width: 700px) {
             .header-content {
                 flex-direction: column;
                 text-align: center;
-            }
-
-            .catalog-nav {
-                justify-content: center;
             }
 
             .stats {
                 flex-direction: column;
             }
 
-            .stat-item {
-                width: 100%;
-            }
-
             .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -369,8 +317,8 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <div class="logo">📸 Тройная галерея</div>
-            <div class="catalog-nav" id="catalog-nav"></div>
+            <div class="logo">📸 ДЕВОЧКИ VS МЕМЫ</div>
+            <div class="catalog-buttons" id="catalog-buttons"></div>
         </div>
     </header>
 
@@ -378,18 +326,18 @@
         <!-- Статистика -->
         <div class="stats" id="stats-container"></div>
 
-        <!-- Контейнер для галереи -->
+        <!-- Галерея -->
         <div class="gallery" id="gallery-container"></div>
 
-        <!-- Модальное окно -->
+        <!-- Модалка -->
         <div class="modal" id="image-modal">
             <div class="modal-content">
-                <div class="modal-catalog" id="modal-catalog"></div>
+                <div class="modal-badge" id="modal-badge"></div>
                 <div class="modal-close" onclick="closeModal()">×</div>
-                <img id="modal-image" src="" alt="Увеличенное изображение">
+                <img id="modal-image" src="" alt="">
                 <div class="modal-nav">
                     <button class="nav-btn" id="prev-btn" onclick="navigateModal(-1)">←</button>
-                    <span id="modal-counter" style="color: white; align-self: center; font-size: 16px;"></span>
+                    <span id="modal-counter" style="color: white; font-size: 16px;"></span>
                     <button class="nav-btn" id="next-btn" onclick="navigateModal(1)">→</button>
                 </div>
             </div>
@@ -397,116 +345,117 @@
     </main>
 
     <script>
-        // Каталоги с фотографиями
+        // ВАШИ ФОТО ПО КАТАЛОГАМ
         const catalogs = [
             {
-                id: 1,
-                name: "Мемы",
-                icon: "😂",
-                color: "memes",
+                id: 'girls',
+                name: 'Девочки',
+                icon: '👧',
+                color: '#ff4d6d',
                 images: [
-                    "https://i.imgflip.com/4t0m5.jpg",
-                    "https://i.imgflip.com/1bij.jpg",
-                    "https://i.imgflip.com/26am.jpg",
-                    "https://i.imgflip.com/1g8my.jpg",
-                    "https://i.imgflip.com/1ur9b.jpg",
-                    "https://i.imgflip.com/5c7lw.jpg",
-                    "https://i.imgflip.com/9vct.jpg",
-                    "https://i.imgflip.com/1otk96.jpg"
+                    "https://i.pinimg.com/736x/fd/10/c5/fd10c589cdf07c213ca0cd9f2a87b6b2.jpg",
+                    "https://i.pinimg.com/736x/e0/5f/a9/e05fa9e77ca43d50498f645b73f0e6b5.jpg",
+                    "https://i.pinimg.com/736x/90/ae/3f/90ae3f8957ea37ce2f07862789f4b5f3.jpg",
+                    "https://i.pinimg.com/736x/2d/0e/64/2d0e64000f23d17c7bf203689fe2191a.jpg",
+                    "https://i.pinimg.com/736x/0f/23/68/0f2368db66f24f0992a4c80411a0ee27.jpg",
+                    "https://i.pinimg.com/736x/cc/f6/11/ccf611c37a1cc6627a140de7f289d0e2.jpg",
+                    "https://i.pinimg.com/736x/3e/ab/87/3eab878fac18d35cb418f7891886850e.jpg",
+                    "https://i.pinimg.com/736x/76/ea/4d/76ea4d3dfcdd8bc4ac043d8396293ece.jpg",
+                    "https://i.pinimg.com/736x/73/96/e7/7396e7c162a78935fc6f6e86f9af01d2.jpg",
+                    "https://i.pinimg.com/736x/87/95/99/879599d8abfa64d02c238dc96f8cb994.jpg",
+                    "https://i.pinimg.com/736x/6e/ce/29/6ece29a272d4431c8732f7bfde01d376.jpg",
+                    "https://i.pinimg.com/736x/6d/ad/13/6dad13ee169c0e7c576c853c5fb729c2.jpg",
+                    "https://avatars.mds.yandex.net/i?id=820e285d841e321efdd933df55643e39c07ad26c-12753060-images-thumbs&n=13",
+                    "https://i.pinimg.com/1200x/8a/b2/26/8ab226ae6a7a3b43cfb588d2104a05ff.jpg",
+                    "https://i.pinimg.com/736x/41/96/69/419669821b27bb9baf310597897e25cf.jpg",
+                    "https://i.pinimg.com/736x/c3/97/9e/c3979e255b9cae3d050d83ed333e7392.jpg",
+                    "https://i.pinimg.com/474x/f8/4c/27/f84c27ccdf3b234866c6e0d429d84a4d.jpg",
+                    "https://i.pinimg.com/736x/90/76/9f/90769f3b7b9059c62626313e52a642b7.jpg"
                 ]
             },
             {
-                id: 2,
-                name: "Путешествия",
-                icon: "✈️",
-                color: "travel",
+                id: 'memes',
+                name: 'Мемы',
+                icon: '😂',
+                color: '#4ecdc4',
                 images: [
-                    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400",
-                    "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400",
-                    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400",
-                    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400",
-                    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400",
-                    "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400"
-                ]
-            },
-            {
-                id: 3,
-                name: "Девочки",
-                icon: "👧",
-                color: "girls",
-                images: [
-                    "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400",
-                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
-                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
-                    "https://images.unsplash.com/photo-1524250502761-8ac6f2ca9024?w=400",
-                    "https://images.unsplash.com/photo-1521133573892-e44906baee46?w=400",
-                    "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400",
-                    "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400",
-                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"
+                    "https://i.pinimg.com/736x/b4/b0/58/b4b058b65c5306db01c1af2c85b94218.jpg",
+                    "https://i.pinimg.com/736x/b4/59/06/b45906095c458980db0030b8e74e73db.jpg",
+                    "https://i.pinimg.com/736x/5d/c1/13/5dc113b7c55150a2a3f0e028b4867863.jpg",
+                    "https://i.pinimg.com/736x/88/cb/70/88cb705f4be62ea9f45c60a2a5aa5be5.jpg",
+                    "https://i.pinimg.com/736x/7f/89/bb/7f89bb63fc0b1895ac2fcfa70a1dd784.jpg",
+                    "https://i.pinimg.com/736x/ef/30/fc/ef30fcdfd0b8049f749136efecfef971.jpg",
+                    "https://i.pinimg.com/736x/77/96/4b/77964b736f0e946913d431ebd521117a.jpg",
+                    "https://i.pinimg.com/736x/74/a1/f7/74a1f7751e8f70e1ce610b1115c70528.jpg",
+                    "https://i.pinimg.com/736x/49/55/46/4955463ec177f2089ea46f72feaa1adc.jpg",
+                    "https://i.pinimg.com/736x/de/a9/80/dea98065ac7e0ddd227d2f3e1f06b65d.jpg"
                 ]
             }
         ];
 
         let currentImages = [];
         let currentModalIndex = 0;
-        let currentCatalog = 'all';
+        let currentFilter = 'all';
 
-        // Функция для получения всех изображений
+        // Получить все фото
         function getAllImages() {
-            const allImages = [];
+            const all = [];
             catalogs.forEach(catalog => {
-                catalog.images.forEach(image => {
-                    allImages.push({
-                        url: image,
+                catalog.images.forEach(url => {
+                    all.push({
+                        url: url,
                         catalog: catalog.name,
                         catalogId: catalog.id,
                         icon: catalog.icon
                     });
                 });
             });
-            return shuffleArray(allImages);
+            return shuffleArray(all);
         }
 
-        // Перемешивание массива
+        // Перемешать
         function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
+            for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                [array[i], array[j]] = [array[j], array[i]];
             }
-            return shuffled;
+            return array;
         }
 
-        // Рендер навигации по каталогам
-        function renderCatalogNav() {
-            const nav = document.getElementById('catalog-nav');
-            nav.innerHTML = '';
+        // Кнопки каталогов
+        function renderButtons() {
+            const container = document.getElementById('catalog-buttons');
 
-            // Кнопка "Все"
+            // Все
             const allBtn = document.createElement('button');
-            allBtn.className = `catalog-btn ${currentCatalog === 'all' ? 'active' : ''}`;
-            allBtn.innerHTML = `📁 Все <span class="catalog-count">${getAllImages().length}</span>`;
+            allBtn.className = `catalog-btn all ${currentFilter === 'all' ? 'active' : ''}`;
+            allBtn.innerHTML = `📁 Все <span class="count">${getAllImages().length}</span>`;
             allBtn.onclick = () => filterCatalog('all');
-            nav.appendChild(allBtn);
+            container.appendChild(allBtn);
 
-            // Кнопки каталогов
-            catalogs.forEach(catalog => {
-                const btn = document.createElement('button');
-                btn.className = `catalog-btn ${catalog.color} ${currentCatalog === catalog.id ? 'active' : ''}`;
-                btn.innerHTML = `${catalog.icon} ${catalog.name} <span class="catalog-count">${catalog.images.length}</span>`;
-                btn.onclick = () => filterCatalog(catalog.id);
-                nav.appendChild(btn);
-            });
+            // Девочки
+            const girlsBtn = document.createElement('button');
+            girlsBtn.className = `catalog-btn girls ${currentFilter === 'girls' ? 'active' : ''}`;
+            girlsBtn.innerHTML = `👧 Девочки <span class="count">${catalogs[0].images.length}</span>`;
+            girlsBtn.onclick = () => filterCatalog('girls');
+            container.appendChild(girlsBtn);
+
+            // Мемы
+            const memesBtn = document.createElement('button');
+            memesBtn.className = `catalog-btn memes ${currentFilter === 'memes' ? 'active' : ''}`;
+            memesBtn.innerHTML = `😂 Мемы <span class="count">${catalogs[1].images.length}</span>`;
+            memesBtn.onclick = () => filterCatalog('memes');
+            container.appendChild(memesBtn);
         }
 
-        // Фильтрация по каталогу
-        function filterCatalog(catalogId) {
-            currentCatalog = catalogId;
+        // Фильтр
+        function filterCatalog(filter) {
+            currentFilter = filter;
 
-            if (catalogId === 'all') {
+            if (filter === 'all') {
                 currentImages = getAllImages();
             } else {
-                const catalog = catalogs.find(c => c.id === catalogId);
+                const catalog = catalogs.find(c => c.id === filter);
                 currentImages = catalog.images.map(url => ({
                     url: url,
                     catalog: catalog.name,
@@ -516,195 +465,110 @@
             }
 
             renderGallery(currentImages);
-            renderCatalogNav();
+            renderButtons();
             updateStats();
         }
 
-        // Обновление статистики
+        // Статистика
         function updateStats() {
-            const statsContainer = document.getElementById('stats-container');
-            const totalImages = getAllImages().length;
-
-            const memesCount = catalogs[0].images.length;
-            const travelCount = catalogs[1].images.length;
-            const girlsCount = catalogs[2].images.length;
-
-            statsContainer.innerHTML = `
-                <div class="stat-item">
+            const container = document.getElementById('stats-container');
+            container.innerHTML = `
+                <div class="stat-card">
                     <div class="stat-icon">📸</div>
                     <div class="stat-info">
-                        <h3>Всего фото</h3>
-                        <p>${totalImages}</p>
+                        <h4>Всего фото</h4>
+                        <p>${getAllImages().length}</p>
                     </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-icon">😂</div>
-                    <div class="stat-info">
-                        <h3>Мемы</h3>
-                        <p>${memesCount}</p>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-icon">✈️</div>
-                    <div class="stat-info">
-                        <h3>Путешествия</h3>
-                        <p>${travelCount}</p>
-                    </div>
-                </div>
-                <div class="stat-item">
+                <div class="stat-card">
                     <div class="stat-icon">👧</div>
                     <div class="stat-info">
-                        <h3>Девочки</h3>
-                        <p>${girlsCount}</p>
+                        <h4>Девочки</h4>
+                        <p>${catalogs[0].images.length}</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">😂</div>
+                    <div class="stat-info">
+                        <h4>Мемы</h4>
+                        <p>${catalogs[1].images.length}</p>
                     </div>
                 </div>
             `;
         }
 
-        // Рендер галереи
+        // Галерея
         function renderGallery(images) {
             const container = document.getElementById('gallery-container');
             container.innerHTML = '';
 
-            if (images.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div>📷</div>
-                        <h3>Нет фотографий</h3>
-                        <p>В этом каталоге пока нет изображений</p>
-                    </div>
-                `;
-                return;
-            }
-
-            images.forEach((image, index) => {
+            images.forEach((img, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
 
-                const img = document.createElement('img');
-                img.src = image.url;
-                img.alt = `Image ${index + 1}`;
-                img.loading = 'lazy';
-
-                img.onerror = function() {
-                    this.parentElement.style.background = 'linear-gradient(45deg, #f3f3f3, #e0e0e0)';
-                    this.style.display = 'none';
-
-                    // Добавляем текст заглушки
-                    const placeholder = document.createElement('div');
-                    placeholder.style.cssText = `
-                        width: 100%;
-                        height: 100%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-size: 48px;
-                        color: #999;
-                    `;
-                    placeholder.textContent = image.icon || '📷';
-                    this.parentElement.appendChild(placeholder);
-                };
-
-                img.onclick = () => openModal(index);
-
-                // Определяем класс для бейджа
-                let badgeClass = '';
-                if (image.catalog === 'Мемы') badgeClass = 'badge-memes';
-                else if (image.catalog === 'Путешествия') badgeClass = 'badge-travel';
-                else if (image.catalog === 'Девочки') badgeClass = 'badge-girls';
+                const image = document.createElement('img');
+                image.src = img.url;
+                image.loading = 'lazy';
+                image.onclick = () => openModal(index);
 
                 const badge = document.createElement('div');
-                badge.className = `catalog-badge ${badgeClass}`;
-                badge.textContent = `${image.icon || ''} ${image.catalog}`;
+                badge.className = `badge ${img.catalogId}`;
+                badge.textContent = `${img.icon} ${img.catalog}`;
 
-                item.appendChild(img);
+                item.appendChild(image);
                 item.appendChild(badge);
+                container.appendChild(image);
+                container.appendChild(badge);
                 container.appendChild(item);
             });
         }
 
-        // Открытие модального окна
+        // Модалка
         function openModal(index) {
             currentModalIndex = index;
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-image');
-            const modalCatalog = document.getElementById('modal-catalog');
+            const modalBadge = document.getElementById('modal-badge');
             const counter = document.getElementById('modal-counter');
 
             modalImg.src = currentImages[index].url;
-
-            // Определяем цвет для модального окна
-            let catalogColor = '';
-            if (currentImages[index].catalog === 'Мемы') catalogColor = 'linear-gradient(135deg, #ff6b6b, #ee5253)';
-            else if (currentImages[index].catalog === 'Путешествия') catalogColor = 'linear-gradient(135deg, #4ecdc4, #45b7d1)';
-            else if (currentImages[index].catalog === 'Девочки') catalogColor = 'linear-gradient(135deg, #ff85b3, #ff6b95)';
-
-            modalCatalog.style.background = catalogColor;
-            modalCatalog.textContent = `${currentImages[index].icon || ''} ${currentImages[index].catalog}`;
+            modalBadge.textContent = `${currentImages[index].icon} ${currentImages[index].catalog}`;
+            modalBadge.style.background = currentImages[index].catalogId === 'girls'
+                ? 'linear-gradient(135deg, #ff4d6d, #ff8c9f)'
+                : 'linear-gradient(135deg, #4ecdc4, #45b7aa)';
             counter.textContent = `${index + 1} / ${currentImages.length}`;
             modal.classList.add('active');
 
-            updateNavButtons();
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === currentImages.length - 1;
         }
 
-        // Закрытие модального окна
         function closeModal() {
             document.getElementById('image-modal').classList.remove('active');
         }
 
-        // Навигация в модальном окне
         function navigateModal(direction) {
             const newIndex = currentModalIndex + direction;
             if (newIndex >= 0 && newIndex < currentImages.length) {
-                currentModalIndex = newIndex;
-                const modalImg = document.getElementById('modal-image');
-                const modalCatalog = document.getElementById('modal-catalog');
-                const counter = document.getElementById('modal-counter');
-
-                modalImg.src = currentImages[newIndex].url;
-
-                // Обновляем цвет каталога
-                let catalogColor = '';
-                if (currentImages[newIndex].catalog === 'Мемы') catalogColor = 'linear-gradient(135deg, #ff6b6b, #ee5253)';
-                else if (currentImages[newIndex].catalog === 'Путешествия') catalogColor = 'linear-gradient(135deg, #4ecdc4, #45b7d1)';
-                else if (currentImages[newIndex].catalog === 'Девочки') catalogColor = 'linear-gradient(135deg, #ff85b3, #ff6b95)';
-
-                modalCatalog.style.background = catalogColor;
-                modalCatalog.textContent = `${currentImages[newIndex].icon || ''} ${currentImages[newIndex].catalog}`;
-                counter.textContent = `${newIndex + 1} / ${currentImages.length}`;
-
-                updateNavButtons();
+                openModal(newIndex);
             }
         }
 
-        // Обновление кнопок навигации
-        function updateNavButtons() {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-
-            prevBtn.disabled = currentModalIndex === 0;
-            nextBtn.disabled = currentModalIndex === currentImages.length - 1;
-        }
-
-        // Закрытие по Escape и навигация стрелками
+        // Клавиши
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeModal();
-            } else if (e.key === 'ArrowLeft') {
-                if (document.getElementById('image-modal').classList.contains('active')) {
-                    navigateModal(-1);
-                }
-            } else if (e.key === 'ArrowRight') {
-                if (document.getElementById('image-modal').classList.contains('active')) {
-                    navigateModal(1);
-                }
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft' && document.getElementById('image-modal').classList.contains('active')) {
+                navigateModal(-1);
+            }
+            if (e.key === 'ArrowRight' && document.getElementById('image-modal').classList.contains('active')) {
+                navigateModal(1);
             }
         });
 
-        // Инициализация
+        // Запуск
         document.addEventListener('DOMContentLoaded', () => {
             currentImages = getAllImages();
-            renderCatalogNav();
+            renderButtons();
             renderGallery(currentImages);
             updateStats();
         });

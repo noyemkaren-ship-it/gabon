@@ -51,3 +51,8 @@ def sh(request: Request):
 @app.get("/currencies.html")
 def curr(request: Request):
     return templates.TemplateResponse("currencies.html", {"request": request})
+
+
+@app.get("/instagram.html")
+def curr(request: Request):
+    return templates.TemplateResponse("instagram.html", {"request": request})

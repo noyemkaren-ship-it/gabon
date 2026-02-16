@@ -44,5 +44,10 @@ def phil(request: Request):
     return templates.TemplateResponse("phil.html", {"request": request})
 
 @app.get("/sh.html")
-def phil(request: Request):
+def sh(request: Request):
     return templates.TemplateResponse("sh.html", {"request": request})
+
+
+@app.get("/currencies.html")
+def curr(request: Request):
+    return templates.TemplateResponse("currencies.html", {"request": request})

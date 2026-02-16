@@ -362,6 +362,9 @@
     </style>
 </head>
 <body>
+    <a href="/create.html" style="text-decoration: none;">
+        <button style="background: linear-gradient(135deg, #ff4d6d, #4ecdc4); border: none; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer;">➕ Добавить</button>
+    </a>
     <header class="header">
         <div class="header-content">
             <div class="logo">📸 Instagram</div>
@@ -743,6 +746,174 @@
         // Запуск
         document.addEventListener('DOMContentLoaded', () => {
             currentImages = getAllImages(); // Сразу перемешанные
+            renderButtons();
+            renderStories();
+            renderGallery(currentImages);
+        });
+    </script>
+    <script>
+        // Получаем фото из базы данных
+        const photos = [
+            {% for photo in photos %}
+            "{{ photo.name }}",
+            {% endfor %}
+        ];
+
+        const catalogs = [
+            {
+                id: 'users',
+                name: 'Мои фото',
+                icon: '📸',
+                color: '#ff4d6d',
+                images: photos.filter(url => url && url.trim() !== '')
+            }
+        ];
+
+        let currentImages = [];
+        let currentModalIndex = 0;
+        let currentFilter = 'users';
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function getAllImages() {
+            const all = [];
+            catalogs[0].images.forEach((url, index) => {
+                all.push({
+                    url: url,
+                    catalog: catalogs[0].name,
+                    catalogId: catalogs[0].id,
+                    icon: catalogs[0].icon
+                });
+            });
+            return shuffleArray(all);
+        }
+
+        function renderButtons() {
+            const container = document.getElementById('catalog-buttons');
+            container.innerHTML = '';
+
+            const usersBtn = document.createElement('button');
+            usersBtn.className = `catalog-btn girls ${currentFilter === 'users' ? 'active' : ''}`;
+            usersBtn.innerHTML = `📸 Мои фото <span class="count">${catalogs[0].images.length}</span>`;
+            usersBtn.onclick = () => filterCatalog('users');
+            container.appendChild(usersBtn);
+        }
+
+        function renderStories() {
+            const container = document.getElementById('stories-container');
+            container.innerHTML = `
+                <div class="story-item">
+                    <div class="story-circle">📸</div>
+                    <div class="story-label">Мои фото</div>
+                    <div class="story-value">${catalogs[0].images.length}</div>
+                </div>
+            `;
+        }
+
+        function filterCatalog(filter) {
+            currentFilter = filter;
+            const catalog = catalogs.find(c => c.id === filter);
+            const catalogImages = catalog.images.map((url, index) => ({
+                url: url,
+                catalog: catalog.name,
+                catalogId: catalog.id,
+                icon: catalog.icon
+            }));
+            currentImages = shuffleArray(catalogImages);
+            renderGallery(currentImages);
+            renderButtons();
+            renderStories();
+        }
+
+        function renderGallery(images) {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '';
+
+            images.forEach((img, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+
+                const image = document.createElement('img');
+                image.src = img.url;
+                image.loading = 'lazy';
+                image.onclick = () => openModal(index);
+                image.onerror = function() {
+                    this.style.display = 'none';
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'image-loader';
+                    errorDiv.textContent = '❌';
+                    item.appendChild(errorDiv);
+                };
+
+                const badge = document.createElement('div');
+                badge.className = 'badge';
+                badge.textContent = img.icon;
+
+                const deleteBtn = document.createElement('div');
+                deleteBtn.className = 'badge';
+                deleteBtn.style.left = '8px';
+                deleteBtn.style.right = 'auto';
+                deleteBtn.style.background = '#ff4d6d';
+                deleteBtn.textContent = '🗑️';
+                deleteBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (confirm('Удалить фото?')) {
+                        const photoId = index + 1;
+                        window.location.href = `/delete/${photoId}`;
+                    }
+                };
+
+                item.appendChild(image);
+                item.appendChild(badge);
+                item.appendChild(deleteBtn);
+                container.appendChild(item);
+            });
+        }
+
+        function openModal(index) {
+            currentModalIndex = index;
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalUsername = document.getElementById('modal-username');
+            const modalCatalog = document.getElementById('modal-catalog');
+            const modalAvatar = document.getElementById('modal-avatar');
+            const counter = document.getElementById('modal-counter');
+            const position = document.getElementById('modal-position');
+
+            const currentImage = currentImages[index];
+
+            modalImg.src = currentImage.url;
+            modalUsername.textContent = currentImage.catalog;
+            modalCatalog.textContent = currentImage.catalog;
+            modalAvatar.textContent = currentImage.icon;
+            counter.textContent = `${index + 1}/${currentImages.length}`;
+            position.textContent = `${index + 1}/${currentImages.length}`;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('image-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function navigateModal(direction) {
+            const newIndex = currentModalIndex + direction;
+            if (newIndex >= 0 && newIndex < currentImages.length) {
+                openModal(newIndex);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            currentImages = getAllImages();
             renderButtons();
             renderStories();
             renderGallery(currentImages);

@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-from database import users, add_user, get_all_users, delete_user
+from database import add_user, get_all_users, delete_user
+
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")

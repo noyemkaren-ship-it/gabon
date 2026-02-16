@@ -17,7 +17,6 @@
             color: white;
         }
 
-        /* Шапка как в Instagram */
         .header {
             background: #000;
             border-bottom: 1px solid #262626;
@@ -44,10 +43,22 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Кнопки как в Instagram Stories */
+        .add-btn {
+            background: linear-gradient(135deg, #ff4d6d, #4ecdc4);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
         .catalog-buttons {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .catalog-btn {
@@ -63,6 +74,10 @@
             display: flex;
             align-items: center;
             gap: 4px;
+        }
+
+        .catalog-btn.users {
+            background: #9b59b6;
         }
 
         .catalog-btn.girls {
@@ -88,7 +103,6 @@
             font-size: 11px;
         }
 
-        /* Instagram Stories-like stats */
         .stories {
             max-width: 935px;
             margin: 16px auto;
@@ -133,7 +147,6 @@
             color: white;
         }
 
-        /* Галерея как в Instagram */
         .gallery {
             max-width: 935px;
             margin: 0 auto;
@@ -144,7 +157,6 @@
             background: #000;
         }
 
-        /* Карточка */
         .gallery-item {
             position: relative;
             width: 100%;
@@ -168,7 +180,6 @@
             transform: scale(1.05);
         }
 
-        /* Бейдж как в Instagram (лайки) */
         .badge {
             position: absolute;
             bottom: 8px;
@@ -183,7 +194,20 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* Модальное окно как в Instagram */
+        .delete-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            padding: 4px 8px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            background: #ff4d6d;
+            cursor: pointer;
+            z-index: 10;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -322,7 +346,6 @@
             font-size: 14px;
         }
 
-        /* Адаптивность как в Instagram */
         @media (max-width: 735px) {
             .gallery {
                 grid-template-columns: repeat(3, 1fr);
@@ -348,7 +371,6 @@
             }
         }
 
-        /* Лоадер для фото */
         .image-loader {
             width: 100%;
             height: 100%;
@@ -362,24 +384,18 @@
     </style>
 </head>
 <body>
-    <a href="/create.html" style="text-decoration: none;">
-        <button style="background: linear-gradient(135deg, #ff4d6d, #4ecdc4); border: none; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; cursor: pointer;">➕ Добавить</button>
-    </a>
     <header class="header">
         <div class="header-content">
             <div class="logo">📸 Instagram</div>
-            <div class="catalog-buttons" id="catalog-buttons"></div>
+            <a href="/create.html" class="add-btn">➕ Добавить фото</a>
         </div>
     </header>
 
     <main>
-        <!-- Stories с статистикой -->
         <div class="stories" id="stories-container"></div>
-
-        <!-- Галерея -->
+        <div class="catalog-buttons" id="catalog-buttons"></div>
         <div class="gallery" id="gallery-container"></div>
 
-        <!-- Модальное окно как в Instagram -->
         <div class="modal" id="image-modal">
             <div class="modal-header">
                 <div class="modal-user">
@@ -415,8 +431,22 @@
     </main>
 
     <script>
-        // ВАШИ ФОТО ПО КАТАЛОГАМ (С НОВЫМИ ФОТО)
+        // Фото из базы данных пользователей
+        const userPhotos = [
+            {% for photo in photos %}
+            "{{ photo.name }}",
+            {% endfor %}
+        ].filter(url => url && url.trim() !== '');
+
+        // Старые каталоги с девочками и мемами
         const catalogs = [
+            {
+                id: 'users',
+                name: 'Мои фото',
+                icon: '👤',
+                color: '#9b59b6',
+                images: userPhotos
+            },
             {
                 id: 'girls',
                 name: 'Девочки',
@@ -461,7 +491,6 @@
                     "https://i.pinimg.com/736x/c3/97/9e/c3979e255b9cae3d050d83ed333e7392.jpg",
                     "https://i.pinimg.com/474x/f8/4c/27/f84c27ccdf3b234866c6e0d429d84a4d.jpg",
                     "https://i.pinimg.com/736x/90/76/9f/90769f3b7b9059c62626313e52a642b7.jpg",
-                    // НОВЫЕ ФОТО (11 штук)
                     "https://i.pinimg.com/736x/de/f7/e0/def7e0cffdbefa9190486f38a31d46be.jpg",
                     "https://i.pinimg.com/736x/80/67/3b/80673b65fc89b9bfb6bcbe5a6c60533c.jpg",
                     "https://i.pinimg.com/736x/c9/5f/4c/c95f4cb5d9e9dc4ef935613cfd6d7791.jpg",
@@ -501,7 +530,6 @@
                     "https://i.pinimg.com/736x/74/a1/f7/74a1f7751e8f70e1ce610b1115c70528.jpg",
                     "https://i.pinimg.com/736x/49/55/46/4955463ec177f2089ea46f72feaa1adc.jpg",
                     "https://i.pinimg.com/736x/de/a9/80/dea98065ac7e0ddd227d2f3e1f06b65d.jpg",
-                    // НОВЫЕ МЕМЫ (8 штук)
                     "https://i.pinimg.com/736x/86/84/b1/8684b18cf28e6674878973a5d8759651.jpg",
                     "https://i.pinimg.com/736x/e5/e6/30/e5e6304ca5243cf1d10c8435c8a2338a.jpg",
                     "https://i.pinimg.com/736x/a4/1e/7a/a41e7ac88759d4312e412a703f3a53ee.jpg",
@@ -522,257 +550,6 @@
         let currentModalIndex = 0;
         let currentFilter = 'all';
 
-        // Функция для перемешивания массива (РАНДОМ)
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
-
-        // Получить все фото и ПЕРЕМЕШАТЬ
-        function getAllImages() {
-            const all = [];
-            // Все фото девочек
-            catalogs[0].images.forEach((url, index) => {
-                all.push({
-                    url: url,
-                    catalog: catalogs[0].name,
-                    catalogId: catalogs[0].id,
-                    icon: catalogs[0].icon,
-                    order: `girls-${index}`
-                });
-            });
-            // Все фото мемов
-            catalogs[1].images.forEach((url, index) => {
-                all.push({
-                    url: url,
-                    catalog: catalogs[1].name,
-                    catalogId: catalogs[1].id,
-                    icon: catalogs[1].icon,
-                    order: `memes-${index}`
-                });
-            });
-            return shuffleArray(all); // ПЕРЕМЕШИВАЕМ ВСЕ ФОТО
-        }
-
-        // Кнопки каталогов
-        function renderButtons() {
-            const container = document.getElementById('catalog-buttons');
-            container.innerHTML = '';
-
-            // Все
-            const allBtn = document.createElement('button');
-            allBtn.className = `catalog-btn all ${currentFilter === 'all' ? 'active' : ''}`;
-            allBtn.innerHTML = `📸 Все <span class="count">${getAllImages().length}</span>`;
-            allBtn.onclick = () => filterCatalog('all');
-            container.appendChild(allBtn);
-
-            // Девочки
-            const girlsBtn = document.createElement('button');
-            girlsBtn.className = `catalog-btn girls ${currentFilter === 'girls' ? 'active' : ''}`;
-            girlsBtn.innerHTML = `👧 Девочки <span class="count">${catalogs[0].images.length}</span>`;
-            girlsBtn.onclick = () => filterCatalog('girls');
-            container.appendChild(girlsBtn);
-
-            // Мемы
-            const memesBtn = document.createElement('button');
-            memesBtn.className = `catalog-btn memes ${currentFilter === 'memes' ? 'active' : ''}`;
-            memesBtn.innerHTML = `😂 Мемы <span class="count">${catalogs[1].images.length}</span>`;
-            memesBtn.onclick = () => filterCatalog('memes');
-            container.appendChild(memesBtn);
-        }
-
-        // Stories статистика
-        function renderStories() {
-            const container = document.getElementById('stories-container');
-            const total = getAllImages().length;
-
-            container.innerHTML = `
-                <div class="story-item">
-                    <div class="story-circle">📸</div>
-                    <div class="story-label">Всего</div>
-                    <div class="story-value">${total}</div>
-                </div>
-                <div class="story-item">
-                    <div class="story-circle">👧</div>
-                    <div class="story-label">Девочки</div>
-                    <div class="story-value">${catalogs[0].images.length}</div>
-                </div>
-                <div class="story-item">
-                    <div class="story-circle">😂</div>
-                    <div class="story-label">Мемы</div>
-                    <div class="story-value">${catalogs[1].images.length}</div>
-                </div>
-            `;
-        }
-
-        // Фильтр
-        function filterCatalog(filter) {
-            currentFilter = filter;
-
-            if (filter === 'all') {
-                // Для раздела "Все" - ПЕРЕМЕШИВАЕМ все фото
-                currentImages = getAllImages();
-            } else {
-                const catalog = catalogs.find(c => c.id === filter);
-                // Для отдельных каталогов - ТОЖЕ ПЕРЕМЕШИВАЕМ
-                const catalogImages = catalog.images.map((url, index) => ({
-                    url: url,
-                    catalog: catalog.name,
-                    catalogId: catalog.id,
-                    icon: catalog.icon,
-                    order: `${catalog.id}-${index}`
-                }));
-                currentImages = shuffleArray(catalogImages); // ПЕРЕМЕШИВАЕМ ФОТО В КАТАЛОГЕ
-            }
-
-            renderGallery(currentImages);
-            renderButtons();
-            renderStories();
-        }
-
-        // Галерея
-        function renderGallery(images) {
-            const container = document.getElementById('gallery-container');
-            container.innerHTML = '';
-
-            images.forEach((img, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-
-                const image = document.createElement('img');
-                image.src = img.url;
-                image.loading = 'lazy';
-                image.onclick = () => openModal(index);
-                image.onerror = function() {
-                    this.style.display = 'none';
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'image-loader';
-                    errorDiv.textContent = '❌';
-                    item.appendChild(errorDiv);
-                };
-
-                const badge = document.createElement('div');
-                badge.className = 'badge';
-                badge.textContent = img.icon;
-
-                item.appendChild(image);
-                item.appendChild(badge);
-                container.appendChild(item);
-            });
-        }
-
-        // Модалка
-        function openModal(index) {
-            currentModalIndex = index;
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-image');
-            const modalUsername = document.getElementById('modal-username');
-            const modalCatalog = document.getElementById('modal-catalog');
-            const modalAvatar = document.getElementById('modal-avatar');
-            const counter = document.getElementById('modal-counter');
-            const position = document.getElementById('modal-position');
-
-            const currentImage = currentImages[index];
-
-            modalImg.src = currentImage.url;
-            modalUsername.textContent = currentImage.catalog;
-            modalCatalog.textContent = currentImage.catalog;
-            modalAvatar.textContent = currentImage.icon;
-            counter.textContent = `${index + 1}/${currentImages.length}`;
-            position.textContent = `${index + 1}/${currentImages.length}`;
-
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            updateNavButtons();
-        }
-
-        function closeModal() {
-            document.getElementById('image-modal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        function navigateModal(direction) {
-            const newIndex = currentModalIndex + direction;
-            if (newIndex >= 0 && newIndex < currentImages.length) {
-                openModal(newIndex);
-            }
-        }
-
-        function updateNavButtons() {
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-
-            prevBtn.disabled = currentModalIndex === 0;
-            nextBtn.disabled = currentModalIndex === currentImages.length - 1;
-        }
-
-        // Клавиши
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowLeft' && document.getElementById('image-modal').classList.contains('active')) {
-                navigateModal(-1);
-            }
-            if (e.key === 'ArrowRight' && document.getElementById('image-modal').classList.contains('active')) {
-                navigateModal(1);
-            }
-        });
-
-        // Свайпы для мобильных
-        let touchStartX = 0;
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', (e) => {
-            if (!document.getElementById('image-modal').classList.contains('active')) return;
-
-            const touchEndX = e.changedTouches[0].screenX;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    navigateModal(1);
-                } else {
-                    navigateModal(-1);
-                }
-            }
-        });
-
-        // Запуск
-        document.addEventListener('DOMContentLoaded', () => {
-            currentImages = getAllImages(); // Сразу перемешанные
-            renderButtons();
-            renderStories();
-            renderGallery(currentImages);
-        });
-    </script>
-    <script>
-        // Получаем фото из базы данных
-        const photos = [
-            {% for photo in photos %}
-            "{{ photo.name }}",
-            {% endfor %}
-        ];
-
-        const catalogs = [
-            {
-                id: 'users',
-                name: 'Мои фото',
-                icon: '📸',
-                color: '#ff4d6d',
-                images: photos.filter(url => url && url.trim() !== '')
-            }
-        ];
-
-        let currentImages = [];
-        let currentModalIndex = 0;
-        let currentFilter = 'users';
-
         function shuffleArray(array) {
             const shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -784,12 +561,16 @@
 
         function getAllImages() {
             const all = [];
-            catalogs[0].images.forEach((url, index) => {
-                all.push({
-                    url: url,
-                    catalog: catalogs[0].name,
-                    catalogId: catalogs[0].id,
-                    icon: catalogs[0].icon
+            catalogs.forEach(catalog => {
+                catalog.images.forEach((url, index) => {
+                    if (url && url.trim() !== '') {
+                        all.push({
+                            url: url,
+                            catalog: catalog.name,
+                            catalogId: catalog.id,
+                            icon: catalog.icon
+                        });
+                    }
                 });
             });
             return shuffleArray(all);
@@ -799,37 +580,60 @@
             const container = document.getElementById('catalog-buttons');
             container.innerHTML = '';
 
-            const usersBtn = document.createElement('button');
-            usersBtn.className = `catalog-btn girls ${currentFilter === 'users' ? 'active' : ''}`;
-            usersBtn.innerHTML = `📸 Мои фото <span class="count">${catalogs[0].images.length}</span>`;
-            usersBtn.onclick = () => filterCatalog('users');
-            container.appendChild(usersBtn);
+            // Кнопка "Все"
+            const allBtn = document.createElement('button');
+            allBtn.className = `catalog-btn all ${currentFilter === 'all' ? 'active' : ''}`;
+            allBtn.innerHTML = `📸 Все <span class="count">${getAllImages().length}</span>`;
+            allBtn.onclick = () => filterCatalog('all');
+            container.appendChild(allBtn);
+
+            // Кнопки для каждого каталога
+            catalogs.forEach(catalog => {
+                const btn = document.createElement('button');
+                btn.className = `catalog-btn ${catalog.id} ${currentFilter === catalog.id ? 'active' : ''}`;
+                btn.innerHTML = `${catalog.icon} ${catalog.name} <span class="count">${catalog.images.length}</span>`;
+                btn.onclick = () => filterCatalog(catalog.id);
+                container.appendChild(btn);
+            });
         }
 
         function renderStories() {
             const container = document.getElementById('stories-container');
-            container.innerHTML = `
-                <div class="story-item">
-                    <div class="story-circle">📸</div>
-                    <div class="story-label">Мои фото</div>
-                    <div class="story-value">${catalogs[0].images.length}</div>
-                </div>
-            `;
+            const total = getAllImages().length;
+
+            let stories = `<div class="story-item"><div class="story-circle">📸</div><div class="story-label">Всего</div><div class="story-value">${total}</div></div>`;
+
+            catalogs.forEach(catalog => {
+                stories += `
+                    <div class="story-item">
+                        <div class="story-circle">${catalog.icon}</div>
+                        <div class="story-label">${catalog.name}</div>
+                        <div class="story-value">${catalog.images.length}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = stories;
         }
 
         function filterCatalog(filter) {
             currentFilter = filter;
-            const catalog = catalogs.find(c => c.id === filter);
-            const catalogImages = catalog.images.map((url, index) => ({
-                url: url,
-                catalog: catalog.name,
-                catalogId: catalog.id,
-                icon: catalog.icon
-            }));
-            currentImages = shuffleArray(catalogImages);
+
+            if (filter === 'all') {
+                currentImages = getAllImages();
+            } else {
+                const catalog = catalogs.find(c => c.id === filter);
+                const catalogImages = catalog.images.map((url, index) => ({
+                    url: url,
+                    catalog: catalog.name,
+                    catalogId: catalog.id,
+                    icon: catalog.icon
+                }));
+                currentImages = shuffleArray(catalogImages);
+            }
+
             renderGallery(currentImages);
             renderButtons();
-            renderStories();
         }
 
         function renderGallery(images) {
@@ -856,23 +660,24 @@
                 badge.className = 'badge';
                 badge.textContent = img.icon;
 
-                const deleteBtn = document.createElement('div');
-                deleteBtn.className = 'badge';
-                deleteBtn.style.left = '8px';
-                deleteBtn.style.right = 'auto';
-                deleteBtn.style.background = '#ff4d6d';
-                deleteBtn.textContent = '🗑️';
-                deleteBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    if (confirm('Удалить фото?')) {
-                        const photoId = index + 1;
-                        window.location.href = `/delete/${photoId}`;
-                    }
-                };
-
                 item.appendChild(image);
                 item.appendChild(badge);
-                item.appendChild(deleteBtn);
+
+                // Кнопка удаления только для каталога пользователей
+                if (img.catalogId === 'users') {
+                    const deleteBtn = document.createElement('div');
+                    deleteBtn.className = 'delete-badge';
+                    deleteBtn.textContent = '🗑️';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        if (confirm('Удалить фото?')) {
+                            const photoId = index + 1;
+                            window.location.href = `/delete/${photoId}`;
+                        }
+                    };
+                    item.appendChild(deleteBtn);
+                }
+
                 container.appendChild(item);
             });
         }
@@ -911,6 +716,16 @@
                 openModal(newIndex);
             }
         }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft' && document.getElementById('image-modal').classList.contains('active')) {
+                navigateModal(-1);
+            }
+            if (e.key === 'ArrowRight' && document.getElementById('image-modal').classList.contains('active')) {
+                navigateModal(1);
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             currentImages = getAllImages();

@@ -1,6 +1,15 @@
 import dataset
-db = dataset.connect('sqlite:///users.db')
-users = db['users']  # таблица для фото (id, name - это url)
+import os
+from pathlib import Path
+
+# Создаем базу в домашней папке (там всегда есть права)
+home = str(Path.home())
+db_path = os.path.join(home, 'users.db')
+
+db = dataset.connect(f'sqlite:///{db_path}')
+users = db['users']
+
+print(f"✅ База данных: {db_path}")
 
 def add_user(id, image_url):
     users.insert({'id': id, 'name': image_url})

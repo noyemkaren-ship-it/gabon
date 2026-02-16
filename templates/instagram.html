@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram-подобная галерея</title>
+    <title>Галерея | Мемы, Путешествия и Девочки</title>
     <style>
         * {
             margin: 0;
@@ -13,48 +13,149 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #fafafa;
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            min-height: 100vh;
         }
 
-        /* Шапка в стиле Instagram */
+        /* Шапка */
         .header {
-            background-color: white;
-            border-bottom: 1px solid #dbdbdb;
-            padding: 12px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 16px 0;
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
 
         .header-content {
-            max-width: 935px;
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            justify-content: space-between;
+            padding: 0 24px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Навигация по каталогам */
+        .catalog-nav {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .catalog-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            background: white;
+            color: #4158D0;
             font-weight: 600;
-            font-style: italic;
-            color: #262626;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .logo span {
-            font-style: normal;
-            font-weight: 300;
-            margin-left: 4px;
+        .catalog-btn i {
+            font-size: 18px;
         }
 
-        /* Сетка в стиле Instagram */
+        .catalog-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(65, 88, 208, 0.3);
+        }
+
+        .catalog-btn.active {
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 100%);
+            color: white;
+        }
+
+        .catalog-btn.memes {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .catalog-btn.travel {
+            background: #4ecdc4;
+            color: white;
+        }
+
+        .catalog-btn.girls {
+            background: #ff85b3;
+            color: white;
+        }
+
+        .catalog-count {
+            background: rgba(255,255,255,0.2);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        /* Статистика */
+        .stats {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 0 24px;
+            display: flex;
+            gap: 20px;
+            color: white;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .stat-info p {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Сетка галереи */
         .gallery {
-            max-width: 935px;
+            max-width: 1200px;
             margin: 30px auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            padding: 0 4px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 24px;
         }
 
         /* Карточка с изображением */
@@ -64,13 +165,15 @@
             aspect-ratio: 1 / 1;
             overflow: hidden;
             cursor: pointer;
-            background-color: #f0f0f0;
-            border: 1px solid #efefef;
-            transition: opacity 0.2s ease;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #f3f3f3, #ffffff);
         }
 
         .gallery-item:hover {
-            opacity: 0.9;
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
 
         .gallery-item img {
@@ -78,9 +181,44 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 0.5s ease;
         }
 
-        /* Простая модалка для увеличения */
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Каталог-бейдж */
+        .catalog-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .badge-memes {
+            background: linear-gradient(135deg, #ff6b6b, #ee5253);
+            color: white;
+        }
+
+        .badge-travel {
+            background: linear-gradient(135deg, #4ecdc4, #45b7d1);
+            color: white;
+        }
+
+        .badge-girls {
+            background: linear-gradient(135deg, #ff85b3, #ff6b95);
+            color: white;
+        }
+
+        /* Модальное окно */
         .modal {
             display: none;
             position: fixed;
@@ -88,8 +226,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
             cursor: pointer;
@@ -99,39 +238,130 @@
             display: flex;
         }
 
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
         .modal img {
-            max-width: 90%;
-            max-height: 90%;
+            max-width: 100%;
+            max-height: 90vh;
             object-fit: contain;
-            border: 2px solid white;
-            border-radius: 4px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
 
-        /* Подпись под картинками */
-        .footer-note {
-            text-align: center;
-            margin: 30px 0;
-            color: #8e8e8e;
+        .modal-catalog {
+            position: absolute;
+            top: -45px;
+            left: 0;
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: white;
             font-size: 14px;
-            padding: 0 20px;
+            font-weight: 600;
         }
 
-        .footer-note a {
-            color: #00376b;
-            text-decoration: none;
+        .modal-close {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        /* Навигация в модалке */
+        .modal-nav {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.7;
         }
 
         /* Адаптивность */
-        @media (max-width: 735px) {
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2px;
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
             }
-        }
 
-        @media (max-width: 480px) {
+            .catalog-nav {
+                justify-content: center;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .stat-item {
+                width: 100%;
+            }
+
             .gallery {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             }
         }
     </style>
@@ -139,43 +369,105 @@
 <body>
     <header class="header">
         <div class="header-content">
-            <div class="logo">Instagram<span>галерея</span></div>
+            <div class="logo">📸 Тройная галерея</div>
+            <div class="catalog-nav" id="catalog-nav"></div>
         </div>
     </header>
 
     <main>
-        <!-- Контейнер для галереи, куда JavaScript добавит картинки -->
+        <!-- Статистика -->
+        <div class="stats" id="stats-container"></div>
+
+        <!-- Контейнер для галереи -->
         <div class="gallery" id="gallery-container"></div>
 
-        <!-- Модальное окно для просмотра -->
-        <div class="modal" id="image-modal" onclick="this.classList.remove('active')">
-            <img id="modal-image" src="" alt="Увеличенное изображение">
-        </div>
-
-        <div class="footer-note">
-            ⚠️ Для работы галереи картинки должны быть доступны по прямым ссылкам.<br>
-            Сейчас часть ссылок ведёт на страницы Pinterest, а не на сами изображения.<br>
-            <a href="#">Попробовать обновить</a> или загрузить свои фото.
+        <!-- Модальное окно -->
+        <div class="modal" id="image-modal">
+            <div class="modal-content">
+                <div class="modal-catalog" id="modal-catalog"></div>
+                <div class="modal-close" onclick="closeModal()">×</div>
+                <img id="modal-image" src="" alt="Увеличенное изображение">
+                <div class="modal-nav">
+                    <button class="nav-btn" id="prev-btn" onclick="navigateModal(-1)">←</button>
+                    <span id="modal-counter" style="color: white; align-self: center; font-size: 16px;"></span>
+                    <button class="nav-btn" id="next-btn" onclick="navigateModal(1)">→</button>
+                </div>
+            </div>
         </div>
     </main>
 
     <script>
-        // Массив с исходными ссылками (некоторые могут не работать)
-        const imageUrls = [
-            "https://i.pinimg.com/736x/10/16/c6/1016c6dfb51d5586c449516421bdb6ca.jpg",
-            "https://i.pinimg.com/736x/f8/4c/27/f84c27ccdf3b234866c6e0d429d84a4d.jpg",
-            "https://i.pinimg.com/736x/90/76/9f/90769f3b7b9059c62626313e52a642b7.jpg",
-            "https://i.pinimg.com/736x/3d/d7/62/3dd762bc439c362ff4c064a071603ab2.jpg",
-            "https://i.pinimg.com/736x/64/7b/09/647b0990226f8463816fb4c41b9c9f7e.jpg",
-            "https://i.pinimg.com/736x/d9/59/a5/d959a57ad456b5a14f198ffe46cc048d.jpg",
-            "https://i.pinimg.com/736x/b4/b0/58/b4b058b65c5306db01c1af2c85b94218.jpg",
-            "https://i.pinimg.com/736x/22/60/7e/22607ebf588d36c53b203176b1b8f3ca.jpg",
-            "https://i.pinimg.com/736x/f5/90/d1/f590d1d07b6e554e99ddbc489f05702a.jpg",
-            "https://i.pinimg.com/1200x/41/96/69/419669821b27bb9baf310597897e25cf.jpg",
-            "https://i.pinimg.com/736x/54/80/4c/54804c582ff3e29ec59cde841a3c6cac.jpg"
+        // Каталоги с фотографиями
+        const catalogs = [
+            {
+                id: 1,
+                name: "Мемы",
+                icon: "😂",
+                color: "memes",
+                images: [
+                    "https://i.imgflip.com/4t0m5.jpg",
+                    "https://i.imgflip.com/1bij.jpg",
+                    "https://i.imgflip.com/26am.jpg",
+                    "https://i.imgflip.com/1g8my.jpg",
+                    "https://i.imgflip.com/1ur9b.jpg",
+                    "https://i.imgflip.com/5c7lw.jpg",
+                    "https://i.imgflip.com/9vct.jpg",
+                    "https://i.imgflip.com/1otk96.jpg"
+                ]
+            },
+            {
+                id: 2,
+                name: "Путешествия",
+                icon: "✈️",
+                color: "travel",
+                images: [
+                    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=400",
+                    "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=400",
+                    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400",
+                    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400",
+                    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400",
+                    "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400"
+                ]
+            },
+            {
+                id: 3,
+                name: "Девочки",
+                icon: "👧",
+                color: "girls",
+                images: [
+                    "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400",
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
+                    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400",
+                    "https://images.unsplash.com/photo-1524250502761-8ac6f2ca9024?w=400",
+                    "https://images.unsplash.com/photo-1521133573892-e44906baee46?w=400",
+                    "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400",
+                    "https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?w=400",
+                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400"
+                ]
+            }
         ];
 
-        // Функция для перемешивания массива (алгоритм Фишера-Йетса)
+        let currentImages = [];
+        let currentModalIndex = 0;
+        let currentCatalog = 'all';
+
+        // Функция для получения всех изображений
+        function getAllImages() {
+            const allImages = [];
+            catalogs.forEach(catalog => {
+                catalog.images.forEach(image => {
+                    allImages.push({
+                        url: image,
+                        catalog: catalog.name,
+                        catalogId: catalog.id,
+                        icon: catalog.icon
+                    });
+                });
+            });
+            return shuffleArray(allImages);
+        }
+
+        // Перемешивание массива
         function shuffleArray(array) {
             const shuffled = [...array];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -185,50 +477,236 @@
             return shuffled;
         }
 
-        // Функция для отображения галереи
-        function renderGallery(urls) {
-            const container = document.getElementById('gallery-container');
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-image');
+        // Рендер навигации по каталогам
+        function renderCatalogNav() {
+            const nav = document.getElementById('catalog-nav');
+            nav.innerHTML = '';
 
-            // Очищаем контейнер
+            // Кнопка "Все"
+            const allBtn = document.createElement('button');
+            allBtn.className = `catalog-btn ${currentCatalog === 'all' ? 'active' : ''}`;
+            allBtn.innerHTML = `📁 Все <span class="catalog-count">${getAllImages().length}</span>`;
+            allBtn.onclick = () => filterCatalog('all');
+            nav.appendChild(allBtn);
+
+            // Кнопки каталогов
+            catalogs.forEach(catalog => {
+                const btn = document.createElement('button');
+                btn.className = `catalog-btn ${catalog.color} ${currentCatalog === catalog.id ? 'active' : ''}`;
+                btn.innerHTML = `${catalog.icon} ${catalog.name} <span class="catalog-count">${catalog.images.length}</span>`;
+                btn.onclick = () => filterCatalog(catalog.id);
+                nav.appendChild(btn);
+            });
+        }
+
+        // Фильтрация по каталогу
+        function filterCatalog(catalogId) {
+            currentCatalog = catalogId;
+
+            if (catalogId === 'all') {
+                currentImages = getAllImages();
+            } else {
+                const catalog = catalogs.find(c => c.id === catalogId);
+                currentImages = catalog.images.map(url => ({
+                    url: url,
+                    catalog: catalog.name,
+                    catalogId: catalog.id,
+                    icon: catalog.icon
+                }));
+            }
+
+            renderGallery(currentImages);
+            renderCatalogNav();
+            updateStats();
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            const statsContainer = document.getElementById('stats-container');
+            const totalImages = getAllImages().length;
+
+            const memesCount = catalogs[0].images.length;
+            const travelCount = catalogs[1].images.length;
+            const girlsCount = catalogs[2].images.length;
+
+            statsContainer.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-icon">📸</div>
+                    <div class="stat-info">
+                        <h3>Всего фото</h3>
+                        <p>${totalImages}</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">😂</div>
+                    <div class="stat-info">
+                        <h3>Мемы</h3>
+                        <p>${memesCount}</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">✈️</div>
+                    <div class="stat-info">
+                        <h3>Путешествия</h3>
+                        <p>${travelCount}</p>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">👧</div>
+                    <div class="stat-info">
+                        <h3>Девочки</h3>
+                        <p>${girlsCount}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Рендер галереи
+        function renderGallery(images) {
+            const container = document.getElementById('gallery-container');
             container.innerHTML = '';
 
-            // Перемешиваем ссылки перед отображением
-            const shuffledUrls = shuffleArray(urls);
+            if (images.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div>📷</div>
+                        <h3>Нет фотографий</h3>
+                        <p>В этом каталоге пока нет изображений</p>
+                    </div>
+                `;
+                return;
+            }
 
-            // Создаём элементы галереи
-            shuffledUrls.forEach((url, index) => {
+            images.forEach((image, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
 
                 const img = document.createElement('img');
-                img.src = url;
+                img.src = image.url;
                 img.alt = `Image ${index + 1}`;
-                img.loading = 'lazy'; // Ленивая загрузка для производительности
+                img.loading = 'lazy';
 
-                // Обработчик ошибки загрузки изображения
                 img.onerror = function() {
-                    this.parentElement.style.backgroundColor = '#f0f0f0';
+                    this.parentElement.style.background = 'linear-gradient(45deg, #f3f3f3, #e0e0e0)';
                     this.style.display = 'none';
-                    // Можно добавить текст ошибки, но лучше просто оставить пустой квадрат
+
+                    // Добавляем текст заглушки
+                    const placeholder = document.createElement('div');
+                    placeholder.style.cssText = `
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 48px;
+                        color: #999;
+                    `;
+                    placeholder.textContent = image.icon || '📷';
+                    this.parentElement.appendChild(placeholder);
                 };
 
-                // Открытие модального окна при клике
-                img.onclick = function(e) {
-                    e.stopPropagation();
-                    modalImg.src = this.src;
-                    modal.classList.add('active');
-                };
+                img.onclick = () => openModal(index);
+
+                // Определяем класс для бейджа
+                let badgeClass = '';
+                if (image.catalog === 'Мемы') badgeClass = 'badge-memes';
+                else if (image.catalog === 'Путешествия') badgeClass = 'badge-travel';
+                else if (image.catalog === 'Девочки') badgeClass = 'badge-girls';
+
+                const badge = document.createElement('div');
+                badge.className = `catalog-badge ${badgeClass}`;
+                badge.textContent = `${image.icon || ''} ${image.catalog}`;
 
                 item.appendChild(img);
+                item.appendChild(badge);
                 container.appendChild(item);
             });
         }
 
-        // Запускаем отображение галереи после загрузки страницы
+        // Открытие модального окна
+        function openModal(index) {
+            currentModalIndex = index;
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalCatalog = document.getElementById('modal-catalog');
+            const counter = document.getElementById('modal-counter');
+
+            modalImg.src = currentImages[index].url;
+
+            // Определяем цвет для модального окна
+            let catalogColor = '';
+            if (currentImages[index].catalog === 'Мемы') catalogColor = 'linear-gradient(135deg, #ff6b6b, #ee5253)';
+            else if (currentImages[index].catalog === 'Путешествия') catalogColor = 'linear-gradient(135deg, #4ecdc4, #45b7d1)';
+            else if (currentImages[index].catalog === 'Девочки') catalogColor = 'linear-gradient(135deg, #ff85b3, #ff6b95)';
+
+            modalCatalog.style.background = catalogColor;
+            modalCatalog.textContent = `${currentImages[index].icon || ''} ${currentImages[index].catalog}`;
+            counter.textContent = `${index + 1} / ${currentImages.length}`;
+            modal.classList.add('active');
+
+            updateNavButtons();
+        }
+
+        // Закрытие модального окна
+        function closeModal() {
+            document.getElementById('image-modal').classList.remove('active');
+        }
+
+        // Навигация в модальном окне
+        function navigateModal(direction) {
+            const newIndex = currentModalIndex + direction;
+            if (newIndex >= 0 && newIndex < currentImages.length) {
+                currentModalIndex = newIndex;
+                const modalImg = document.getElementById('modal-image');
+                const modalCatalog = document.getElementById('modal-catalog');
+                const counter = document.getElementById('modal-counter');
+
+                modalImg.src = currentImages[newIndex].url;
+
+                // Обновляем цвет каталога
+                let catalogColor = '';
+                if (currentImages[newIndex].catalog === 'Мемы') catalogColor = 'linear-gradient(135deg, #ff6b6b, #ee5253)';
+                else if (currentImages[newIndex].catalog === 'Путешествия') catalogColor = 'linear-gradient(135deg, #4ecdc4, #45b7d1)';
+                else if (currentImages[newIndex].catalog === 'Девочки') catalogColor = 'linear-gradient(135deg, #ff85b3, #ff6b95)';
+
+                modalCatalog.style.background = catalogColor;
+                modalCatalog.textContent = `${currentImages[newIndex].icon || ''} ${currentImages[newIndex].catalog}`;
+                counter.textContent = `${newIndex + 1} / ${currentImages.length}`;
+
+                updateNavButtons();
+            }
+        }
+
+        // Обновление кнопок навигации
+        function updateNavButtons() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            prevBtn.disabled = currentModalIndex === 0;
+            nextBtn.disabled = currentModalIndex === currentImages.length - 1;
+        }
+
+        // Закрытие по Escape и навигация стрелками
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            } else if (e.key === 'ArrowLeft') {
+                if (document.getElementById('image-modal').classList.contains('active')) {
+                    navigateModal(-1);
+                }
+            } else if (e.key === 'ArrowRight') {
+                if (document.getElementById('image-modal').classList.contains('active')) {
+                    navigateModal(1);
+                }
+            }
+        });
+
+        // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
-            renderGallery(imageUrls);
+            currentImages = getAllImages();
+            renderCatalogNav();
+            renderGallery(currentImages);
+            updateStats();
         });
     </script>
 </body>

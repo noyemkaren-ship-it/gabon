@@ -7,4 +7,16 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 def main(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request})
+
+@app.get("/index.html")
+def gabon(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/armenia.html")
+def main(request: Request):
+    return templates.TemplateResponse("armenia.html", {"request": request})
+
+@app.get("/rusha.html")
+def main(request: Request):
+    return templates.TemplateResponse("rusha.html", {"request": request})

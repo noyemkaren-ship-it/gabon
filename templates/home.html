@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Флаги стран</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .flag-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .flag-button {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 5rem; /* Размер флага-эмодзи */
+            background-color: white;
+            border: 3px solid #ccc;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.2s, border-color 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-width: 150px;
+        }
+        .flag-button:hover {
+            transform: scale(1.05);
+            border-color: #007bff;
+        }
+        .flag-button span {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Выбери страну по флагу</h1>
+    <div class="flag-container">
+        <!-- Флаг Габона (ведет на index.html) -->
+        <a href="index.html" class="flag-button">
+            <span>🇬🇦</span>
+            <span>Габон</span>
+        </a>
+        <!-- Флаг Армении (ведет на armenia.html) -->
+        <a href="armenia.html" class="flag-button">
+            <span>🇦🇲</span>
+            <span>Армения</span>
+        </a>
+        <!-- Флаг России (ведет на rusha.html) -->
+        <a href="rusha.html" class="flag-button">
+            <span>🇷🇺</span>
+            <span>Россия</span>
+        </a>
+    </div>
+</body>
+</html>

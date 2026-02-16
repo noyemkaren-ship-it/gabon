@@ -71,7 +71,7 @@ def dele(id: int):
     return RedirectResponse(url="/instagram.html", status_code=303)
 
 
-@app.get("/Запрос_на_создания_фото_автору", tags=["Запос_Автору_на_добавления_фото_в_2_основные_категории"], summary="Добавить фото в категории девочки/мальчики")
+@app.get("/Запрос_на_создания_фото_автору_нажмите_try_it_out:_затем_execute", tags=["Запос_Автору_на_добавления_фото_в_2_основные_категории"], summary="Добавить фото в категории девочки/мальчики")
 def giter(photo_url: str, categoria: str):
     print("Запрос на создания")
     print(f"фото{photo_url}, категория{categoria}")

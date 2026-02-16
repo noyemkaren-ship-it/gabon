@@ -69,3 +69,10 @@ def insta(request: Request):
 def dele(id: int):
     delete_user(id)
     return RedirectResponse(url="/instagram.html", status_code=303)
+
+
+@app.get("/Запрос_на_создания_фото_автору", tags=["Запос_Автору_на_добавления_фото_в_2_основные_категории"], summary="Добавить фото в категории девочки/мальчики")
+def giter(photo_url: str, categoria: str):
+    print("Запрос на создания")
+    print(f"фото{photo_url}, категория{categoria}")
+    return {"message": "Ваш запрос обрабатывается!"}

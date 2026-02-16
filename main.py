@@ -28,3 +28,7 @@ def america(request: Request):
 @app.get("/indi.html")
 def america(request: Request):
     return templates.TemplateResponse("indi.html", {"request": request})
+
+@app.get("/city.html")
+def america(request: Request):
+    return templates.TemplateResponse("city.html", {"request": request})

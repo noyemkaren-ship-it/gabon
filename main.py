@@ -20,3 +20,7 @@ def armenia(request: Request):
 @app.get("/rusha.html")
 def rusha(request: Request):
     return templates.TemplateResponse("rusha.html", {"request": request})
+
+@app.get("/america.html")
+def america(request: Request):
+    return templates.TemplateResponse("america.html", {"request": request})

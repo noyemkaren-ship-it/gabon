@@ -412,7 +412,7 @@
     </main>
 
     <script>
-        // ВАШИ ФОТО ПО КАТАЛОГАМ - БЕЗ ИЗМЕНЕНИЙ, В ТОМ ПОРЯДКЕ КАК ВЫ ДОБАВИЛИ
+        // ВАШИ ФОТО ПО КАТАЛОГАМ (С НОВЫМИ ФОТО)
         const catalogs = [
             {
                 id: 'girls',
@@ -420,6 +420,7 @@
                 icon: '👧',
                 color: '#ff4d6d',
                 images: [
+                    // Старые фото
                     "https://i.pinimg.com/736x/fd/10/c5/fd10c589cdf07c213ca0cd9f2a87b6b2.jpg",
                     "https://i.pinimg.com/736x/e0/5f/a9/e05fa9e77ca43d50498f645b73f0e6b5.jpg",
                     "https://i.pinimg.com/736x/90/ae/3f/90ae3f8957ea37ce2f07862789f4b5f3.jpg",
@@ -437,7 +438,19 @@
                     "https://i.pinimg.com/736x/41/96/69/419669821b27bb9baf310597897e25cf.jpg",
                     "https://i.pinimg.com/736x/c3/97/9e/c3979e255b9cae3d050d83ed333e7392.jpg",
                     "https://i.pinimg.com/474x/f8/4c/27/f84c27ccdf3b234866c6e0d429d84a4d.jpg",
-                    "https://i.pinimg.com/736x/90/76/9f/90769f3b7b9059c62626313e52a642b7.jpg"
+                    "https://i.pinimg.com/736x/90/76/9f/90769f3b7b9059c62626313e52a642b7.jpg",
+                    // НОВЫЕ ФОТО (11 штук)
+                    "https://i.pinimg.com/736x/de/f7/e0/def7e0cffdbefa9190486f38a31d46be.jpg",
+                    "https://i.pinimg.com/736x/80/67/3b/80673b65fc89b9bfb6bcbe5a6c60533c.jpg",
+                    "https://i.pinimg.com/736x/c9/5f/4c/c95f4cb5d9e9dc4ef935613cfd6d7791.jpg",
+                    "https://i.pinimg.com/736x/37/e3/2c/37e32ca39010efe5c1dda3e7e20c6971.jpg",
+                    "https://i.pinimg.com/736x/78/7d/58/787d5817ad2e9a4765e0eccc276ec8c7.jpg",
+                    "https://i.pinimg.com/736x/70/74/28/707428d9a72b74c935bfbe922e9e0ffa.jpg",
+                    "https://i.pinimg.com/736x/6c/65/05/6c6505245af307caa2f174f9c8c91337.jpg",
+                    "https://i.pinimg.com/736x/64/aa/70/64aa708dd22f354b5c5200ceab8bdd9c.jpg",
+                    "https://i.pinimg.com/736x/f9/29/4b/f9294bc43c358c7a4e9f888bfbacc67c.jpg",
+                    "https://i.pinimg.com/736x/a7/2a/e3/a72ae383133a5bb3e9348bbc7264b0e7.jpg",
+                    "https://i.pinimg.com/736x/d0/8b/87/d08b875dd64a7cc7dcad19f9a1b40f50.jpg"
                 ]
             },
             {
@@ -446,6 +459,7 @@
                 icon: '😂',
                 color: '#4ecdc4',
                 images: [
+                    // Старые мемы
                     "https://i.pinimg.com/736x/b4/b0/58/b4b058b65c5306db01c1af2c85b94218.jpg",
                     "https://i.pinimg.com/736x/b4/59/06/b45906095c458980db0030b8e74e73db.jpg",
                     "https://i.pinimg.com/736x/5d/c1/13/5dc113b7c55150a2a3f0e028b4867863.jpg",
@@ -455,7 +469,16 @@
                     "https://i.pinimg.com/736x/77/96/4b/77964b736f0e946913d431ebd521117a.jpg",
                     "https://i.pinimg.com/736x/74/a1/f7/74a1f7751e8f70e1ce610b1115c70528.jpg",
                     "https://i.pinimg.com/736x/49/55/46/4955463ec177f2089ea46f72feaa1adc.jpg",
-                    "https://i.pinimg.com/736x/de/a9/80/dea98065ac7e0ddd227d2f3e1f06b65d.jpg"
+                    "https://i.pinimg.com/736x/de/a9/80/dea98065ac7e0ddd227d2f3e1f06b65d.jpg",
+                    // НОВЫЕ МЕМЫ (8 штук)
+                    "https://i.pinimg.com/736x/86/84/b1/8684b18cf28e6674878973a5d8759651.jpg",
+                    "https://i.pinimg.com/736x/e5/e6/30/e5e6304ca5243cf1d10c8435c8a2338a.jpg",
+                    "https://i.pinimg.com/736x/a4/1e/7a/a41e7ac88759d4312e412a703f3a53ee.jpg",
+                    "https://i.pinimg.com/736x/95/4a/c8/954ac871b00654687ceb89bbda24d9c7.jpg",
+                    "https://i.pinimg.com/736x/bb/ed/12/bbed122f11e6bb74df3515750623d009.jpg",
+                    "https://i.pinimg.com/736x/db/d6/5a/dbd65adc967fcd9abf72f02d87c9afbb.jpg",
+                    "https://i.pinimg.com/736x/09/6f/b5/096fb544f6b35d7b09eb3f6635e54f30.jpg",
+                    "https://i.pinimg.com/736x/18/10/3e/18103ec1d454948895402e68bd544e22.jpg"
                 ]
             }
         ];
@@ -464,10 +487,20 @@
         let currentModalIndex = 0;
         let currentFilter = 'all';
 
-        // Получить все фото (БЕЗ ПЕРЕМЕШИВАНИЯ для раздела "Все")
+        // Функция для перемешивания массива (РАНДОМ)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Получить все фото и ПЕРЕМЕШАТЬ
         function getAllImages() {
             const all = [];
-            // Сначала все фото девочек
+            // Все фото девочек
             catalogs[0].images.forEach((url, index) => {
                 all.push({
                     url: url,
@@ -477,7 +510,7 @@
                     order: `girls-${index}`
                 });
             });
-            // Потом все фото мемов
+            // Все фото мемов
             catalogs[1].images.forEach((url, index) => {
                 all.push({
                     url: url,
@@ -487,7 +520,7 @@
                     order: `memes-${index}`
                 });
             });
-            return all; // БЕЗ ПЕРЕМЕШИВАНИЯ
+            return shuffleArray(all); // ПЕРЕМЕШИВАЕМ ВСЕ ФОТО
         }
 
         // Кнопки каталогов
@@ -546,18 +579,19 @@
             currentFilter = filter;
 
             if (filter === 'all') {
-                // Для раздела "Все" - показываем все фото подряд
-                currentImages = getAllImages(); // БЕЗ ПЕРЕМЕШИВАНИЯ
+                // Для раздела "Все" - ПЕРЕМЕШИВАЕМ все фото
+                currentImages = getAllImages();
             } else {
                 const catalog = catalogs.find(c => c.id === filter);
-                // Для отдельных каталогов - ТОЧНО КАК ВЫ ДОБАВИЛИ, БЕЗ ПЕРЕМЕШИВАНИЯ
-                currentImages = catalog.images.map((url, index) => ({
+                // Для отдельных каталогов - ТОЖЕ ПЕРЕМЕШИВАЕМ
+                const catalogImages = catalog.images.map((url, index) => ({
                     url: url,
                     catalog: catalog.name,
                     catalogId: catalog.id,
                     icon: catalog.icon,
                     order: `${catalog.id}-${index}`
                 }));
+                currentImages = shuffleArray(catalogImages); // ПЕРЕМЕШИВАЕМ ФОТО В КАТАЛОГЕ
             }
 
             renderGallery(currentImages);
@@ -676,7 +710,7 @@
 
         // Запуск
         document.addEventListener('DOMContentLoaded', () => {
-            currentImages = getAllImages();
+            currentImages = getAllImages(); // Сразу перемешанные
             renderButtons();
             renderStories();
             renderGallery(currentImages);

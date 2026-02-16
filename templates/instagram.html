@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram-подобная галерея</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fafafa;
+        }
+
+        /* Шапка в стиле Instagram */
+        .header {
+            background-color: white;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-content {
+            max-width: 935px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            font-style: italic;
+            color: #262626;
+        }
+
+        .logo span {
+            font-style: normal;
+            font-weight: 300;
+            margin-left: 4px;
+        }
+
+        /* Сетка в стиле Instagram */
+        .gallery {
+            max-width: 935px;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 0 4px;
+        }
+
+        /* Карточка с изображением */
+        .gallery-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #efefef;
+            transition: opacity 0.2s ease;
+        }
+
+        .gallery-item:hover {
+            opacity: 0.9;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Простая модалка для увеличения */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 2px solid white;
+            border-radius: 4px;
+        }
+
+        /* Подпись под картинками */
+        .footer-note {
+            text-align: center;
+            margin: 30px 0;
+            color: #8e8e8e;
+            font-size: 14px;
+            padding: 0 20px;
+        }
+
+        .footer-note a {
+            color: #00376b;
+            text-decoration: none;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 735px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Instagram<span>галерея</span></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Контейнер для галереи, куда JavaScript добавит картинки -->
+        <div class="gallery" id="gallery-container"></div>
+
+        <!-- Модальное окно для просмотра -->
+        <div class="modal" id="image-modal" onclick="this.classList.remove('active')">
+            <img id="modal-image" src="" alt="Увеличенное изображение">
+        </div>
+
+        <div class="footer-note">
+            ⚠️ Для работы галереи картинки должны быть доступны по прямым ссылкам.<br>
+            Сейчас часть ссылок ведёт на страницы Pinterest, а не на сами изображения.<br>
+            <a href="#">Попробовать обновить</a> или загрузить свои фото.
+        </div>
+    </main>
+
+    <script>
+        // Массив с исходными ссылками (некоторые могут не работать)
+        const imageUrls = [
+            "https://i.pinimg.com/736x/10/16/c6/1016c6dfb51d5586c449516421bdb6ca.jpg",
+            "https://i.pinimg.com/736x/f8/4c/27/f84c27ccdf3b234866c6e0d429d84a4d.jpg",
+            "https://i.pinimg.com/736x/90/76/9f/90769f3b7b9059c62626313e52a642b7.jpg",
+            "https://i.pinimg.com/736x/3d/d7/62/3dd762bc439c362ff4c064a071603ab2.jpg",
+            "https://i.pinimg.com/736x/64/7b/09/647b0990226f8463816fb4c41b9c9f7e.jpg",
+            "https://i.pinimg.com/736x/d9/59/a5/d959a57ad456b5a14f198ffe46cc048d.jpg",
+            "https://i.pinimg.com/736x/b4/b0/58/b4b058b65c5306db01c1af2c85b94218.jpg",
+            "https://i.pinimg.com/736x/22/60/7e/22607ebf588d36c53b203176b1b8f3ca.jpg",
+            "https://i.pinimg.com/736x/f5/90/d1/f590d1d07b6e554e99ddbc489f05702a.jpg",
+            "https://i.pinimg.com/1200x/41/96/69/419669821b27bb9baf310597897e25cf.jpg",
+            "https://i.pinimg.com/736x/54/80/4c/54804c582ff3e29ec59cde841a3c6cac.jpg"
+        ];
+
+        // Функция для перемешивания массива (алгоритм Фишера-Йетса)
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Функция для отображения галереи
+        function renderGallery(urls) {
+            const container = document.getElementById('gallery-container');
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-image');
+
+            // Очищаем контейнер
+            container.innerHTML = '';
+
+            // Перемешиваем ссылки перед отображением
+            const shuffledUrls = shuffleArray(urls);
+
+            // Создаём элементы галереи
+            shuffledUrls.forEach((url, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `Image ${index + 1}`;
+                img.loading = 'lazy'; // Ленивая загрузка для производительности
+
+                // Обработчик ошибки загрузки изображения
+                img.onerror = function() {
+                    this.parentElement.style.backgroundColor = '#f0f0f0';
+                    this.style.display = 'none';
+                    // Можно добавить текст ошибки, но лучше просто оставить пустой квадрат
+                };
+
+                // Открытие модального окна при клике
+                img.onclick = function(e) {
+                    e.stopPropagation();
+                    modalImg.src = this.src;
+                    modal.classList.add('active');
+                };
+
+                item.appendChild(img);
+                container.appendChild(item);
+            });
+        }
+
+        // Запускаем отображение галереи после загрузки страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGallery(imageUrls);
+        });
+    </script>
+</body>
+</html>

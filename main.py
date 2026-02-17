@@ -10,10 +10,6 @@ templates = Jinja2Templates(directory="templates")
 async def main(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
-@app.get("/ph.html")
-async def main(request: Request):
-    return templates.TemplateResponse("ph.html", {"request": request})
-
 @app.get("/index.html")
 async def gabon(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})

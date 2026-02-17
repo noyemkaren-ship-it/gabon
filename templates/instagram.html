@@ -88,6 +88,10 @@
             background: #4ecdc4;
         }
 
+        .catalog-btn.nature {
+            background: #2ecc71;
+        }
+
         .catalog-btn.all {
             background: #3b3b3b;
         }
@@ -166,7 +170,8 @@
             background: #1a1a1a;
         }
 
-        .gallery-item img {
+        .gallery-item img,
+        .gallery-item video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -176,7 +181,8 @@
             max-height: 100%;
         }
 
-        .gallery-item:hover img {
+        .gallery-item:hover img,
+        .gallery-item:hover video {
             transform: scale(1.05);
         }
 
@@ -280,7 +286,8 @@
             padding: 80px 0 100px;
         }
 
-        .modal-image-container img {
+        .modal-image-container img,
+        .modal-image-container video {
             max-width: 100%;
             max-height: calc(100vh - 180px);
             object-fit: contain;
@@ -412,7 +419,9 @@
             </div>
 
             <div class="modal-image-container">
-                <img id="modal-image" src="" alt="" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22 viewBox=%220 0 200 200%22><rect width=%22200%22 height=%22200%22 fill=%22%23333%22/><text x=%2250%22 y=%22115%22 font-size=%2220%22 fill=%22%23fff%22>⚠️</text></svg>'">
+                <img id="modal-image" src="" alt="" style="display: none;">
+                <video id="modal-video" src="" controls style="display: none; max-width: 100%; max-height: calc(100vh - 180px);"></video>
+                <div id="modal-fallback" style="display: none; color: white;">Не удалось загрузить медиа</div>
             </div>
 
             <div class="modal-footer">
@@ -444,18 +453,18 @@
             {% endfor %}
         ].filter(url => url && url.trim() !== '');
 
-        // Старые каталоги с девочками и мемами
+        // Каталоги с девочками, мемами и природой/путешествиями
         const catalogs = [
             {
                 id: 'users',
-                name: 'Мои фото',
+                name: 'Сообщество',
                 icon: '👤',
                 color: '#9b59b6',
                 images: userPhotos
             },
             {
                 id: 'girls',
-                name: 'Девочки',
+                name: 'Альтушки',
                 icon: '👧',
                 color: '#ff4d6d',
                 images: [
@@ -507,7 +516,26 @@
                     "https://i.pinimg.com/736x/64/aa/70/64aa708dd22f354b5c5200ceab8bdd9c.jpg",
                     "https://i.pinimg.com/736x/f9/29/4b/f9294bc43c358c7a4e9f888bfbacc67c.jpg",
                     "https://i.pinimg.com/736x/a7/2a/e3/a72ae383133a5bb3e9348bbc7264b0e7.jpg",
-                    "https://i.pinimg.com/736x/d0/8b/87/d08b875dd64a7cc7dcad19f9a1b40f50.jpg"
+                    "https://i.pinimg.com/736x/d0/8b/87/d08b875dd64a7cc7dcad19f9a1b40f50.jpg",
+                    "https://i.pinimg.com/736x/66/d7/41/66d741cf1f71c485ddf0c46744ca4aca.jpg",
+                    "https://i.pinimg.com/736x/74/bb/c3/74bbc36c87a390333521753fbf9ecdb2.jpg",
+                    "https://i.pinimg.com/736x/2c/04/23/2c0423f94c253c9ba113bcbf9c252c1b.jpg",
+                    "https://i.pinimg.com/736x/10/0b/a3/100ba307405c177a3c0ae38e652286a5.jpg",
+                    "https://i.pinimg.com/736x/5e/d4/de/5ed4de595b5e36100581e0b9a734f719.jpg",
+                    "https://i.pinimg.com/736x/e4/42/9d/e4429d95fd5e60e3ecc77616f26ada75.jpg",
+                    "https://i.pinimg.com/736x/ed/e0/55/ede055f0386431801ac9b15680f874b8.jpg",
+                    "https://i.pinimg.com/736x/55/fb/70/55fb70be1511a87c16b3b494a3431373.jpg",
+                    "https://i.pinimg.com/1200x/2e/55/57/2e55572758303cc9d4895b5bd5e8014f.jpg",
+                    "https://i.pinimg.com/736x/46/86/4d/46864de93dd9b129a8460f2ed51f555b.jpg",
+                    "https://i.pinimg.com/736x/e1/42/e1/e142e111930dcaa5eded1e856cc847ac.jpg",
+                    "https://i.pinimg.com/736x/48/fc/4b/48fc4bef500234ca125720a918d143a3.jpg",
+                    "https://i.pinimg.com/736x/43/63/17/436317c0881282760d6e52a2f4abb406.jpg",
+                    "https://i.pinimg.com/736x/74/c7/42/74c742a9df7c3b44d15bdd83112c6748.jpg",
+                    "https://i.pinimg.com/736x/55/80/fb/5580fb9cce5a6fd88e78ab28482c4259.jpg",
+                    "https://i.pinimg.com/736x/e4/b4/3e/e4b43eedbbcff41c695d97b5c48a1ddc.jpg",
+                    "https://i.pinimg.com/736x/79/5c/02/795c02ed56c6af70cf6937e06864e793.jpg",
+                    "https://i.pinimg.com/736x/5b/5d/7f/5b5d7f4bb9f48f0ad3068859efb720dc.jpg",
+                    "https://i.pinimg.com/736x/9b/7f/78/9b7f78cf87603ec499b9384c012b1776.jpg"
                 ]
             },
             {
@@ -516,6 +544,19 @@
                 icon: '😂',
                 color: '#4ecdc4',
                 images: [
+                    "https://i.pinimg.com/736x/9d/59/46/9d59467989121657e507f6c3bacca379.jpg",
+                    "https://i.pinimg.com/736x/7b/61/d1/7b61d1c6463af5e378b497b16935057e.jpg",
+                    "https://i.pinimg.com/1200x/00/7d/cf/007dcf29d7c393d7ef81ef2763fd13b2.jpg",
+                    "https://i.pinimg.com/736x/44/f4/13/44f413200487ad9da80742fdfb6bfb24.jpg",
+                    "https://i.pinimg.com/736x/b0/b7/9b/b0b79be4e722a43248a62c0525c6bf4c.jpg",
+                    "https://i.pinimg.com/736x/af/0d/c1/af0dc13fa63df15a1c8f3d9c73f676bc.jpg",
+                    "https://i.pinimg.com/736x/e8/37/27/e8372793838ee26b8e48242561df8944.jpg",
+                    "https://i.pinimg.com/736x/9d/d6/7f/9dd67fa971faa416c0ac1e92f86d6cba.jpg",
+                    "https://i.pinimg.com/736x/5e/4e/98/5e4e982a0bc0b1559d90dd25e7aac3fe.jpg",
+                    "https://i.pinimg.com/736x/1b/6f/56/1b6f562fe5d1989c53b70aabb20b3e58.jpg",
+                    "https://i.pinimg.com/736x/37/be/00/37be00b5bd4fb842f7bfa1f942853e61.jpg",
+                    "https://i.pinimg.com/736x/76/32/e3/7632e31faa75397bec8328a73e7d98d9.jpg",
+                    "https://i.pinimg.com/736x/f4/2e/c6/f42ec636952254f55251b19cf55e67fa.jpg",
                     "https://avatars.mds.yandex.net/i?id=9d38acbfd8b0ba3290190af5b17b2605_l-4881358-images-thumbs&n=13",
                     "https://i.pinimg.com/736x/4b/7c/48/4b7c485dc75a7ea0162fed25296cc605.jpg",
                     "https://i.pinimg.com/736x/d9/3d/b5/d93db54c17e8602aed3717e7caa253c9.jpg",
@@ -549,6 +590,31 @@
                     "https://avatars.mds.yandex.net/i?id=8eec77a3aed3f4b1212df219a8b7af75_l-5304692-images-thumbs&n=13",
                     "https://i.pinimg.com/736x/d7/a4/c7/d7a4c7ecbdfe05a4a0a6699a0ddf46ee.jpg"
                 ]
+            },
+            {
+                id: 'nature',
+                name: 'Природа/Путешествия',
+                icon: '🌿',
+                color: '#2ecc71',
+                images: [
+                    "https://i.pinimg.com/736x/95/7e/33/957e33ff2858afe3d60a8070ccbcc7c3.jpg",
+                    "https://i.pinimg.com/736x/93/18/53/931853b715529f8beeb992919e73891d.jpg",
+                    "https://i.pinimg.com/736x/34/0d/20/340d2064a31a880dc168205cc9d6c148.jpg",
+                    "https://i.pinimg.com/736x/82/0d/5f/820d5f79056469316e0bbe76134e70db.jpg",
+                    "https://i.pinimg.com/736x/e0/a3/1c/e0a31c769cedb0b3b02e19d44fb2a03d.jpg",
+                    "https://i.pinimg.com/1200x/a7/11/44/a711446e1f951e594f80e256b00f37fc.jpg",
+                    "https://i.pinimg.com/736x/4d/29/45/4d29451884cf433f77157cbf64421a3d.jpg",
+                    "https://i.pinimg.com/736x/41/54/54/4154543113c5ca2d9f81c659440b001f.jpg",
+                    "https://i.pinimg.com/736x/e8/7e/40/e87e4021cf427f2ef61c05c7b931f4fb.jpg",
+                    "https://i.pinimg.com/736x/38/7a/1f/387a1f760a32a8c06f69f540bfe17e56.jpg",
+                    "https://v1.pinimg.com/videos/mc/720p/98/b4/20/98b42021d2fb85fb1d1a851e6f99119d.mp4",
+                    "https://i.pinimg.com/736x/be/92/a0/be92a0e435e743ab0e48f445cfcb83a5.jpg",
+                    "https://i.pinimg.com/1200x/23/8d/21/238d21339a4865a00c62bafebed5114f.jpg",
+                    "https://i.pinimg.com/1200x/00/d4/81/00d4814330c49bef2cc938343906df83.jpg",
+                    "https://i.pinimg.com/736x/65/85/0c/65850c187ab3fc02867b91809b82d4d1.jpg",
+                    "https://i.pinimg.com/1200x/c9/f5/62/c9f562e56f46b329f9bfd8e1b8cd4d32.jpg",
+                    "https://i.pinimg.com/1200x/16/44/e2/1644e291be43cd59ea8fbc57c8d9bba1.jpg"
+                ]
             }
         ];
 
@@ -567,7 +633,7 @@
 
         function getAllImages() {
             const all = [];
-            catalogs.forEach(catalog => {                    // Проходим по ВСЕМ каталогам
+            catalogs.forEach(catalog => {
                 catalog.images.forEach((url, index) => {
                     if (url && url.trim() !== '') {
                         all.push({
@@ -579,20 +645,19 @@
                     }
                 });
             });
-            return shuffleArray(all);                         // Возвращаем все фото перемешанные
+            return shuffleArray(all);
         }
 
         function renderButtons() {
             const container = document.getElementById('catalog-buttons');
             container.innerHTML = '';
 
-            // Кнопка "Все"
             const allBtn = document.createElement('button');
             allBtn.className = `catalog-btn all ${currentFilter === 'all' ? 'active' : ''}`;
             allBtn.innerHTML = `📸 Все <span class="count">${getAllImages().length}</span>`;
             allBtn.onclick = () => filterCatalog('all');
             container.appendChild(allBtn);
-            // Кнопки для каждого каталога
+
             catalogs.forEach(catalog => {
                 const btn = document.createElement('button');
                 btn.className = `catalog-btn ${catalog.id} ${currentFilter === catalog.id ? 'active' : ''}`;
@@ -649,26 +714,42 @@
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
 
-                const image = document.createElement('img');
-                image.src = img.url;
-                image.loading = 'lazy';
-                image.onclick = () => openModal(index);
-                image.onerror = function() {
-                    this.style.display = 'none';
-                    const errorDiv = document.createElement('div');
-                    errorDiv.className = 'image-loader';
-                    errorDiv.textContent = '❌';
-                    item.appendChild(errorDiv);
-                };
+                const isVideo = img.url.includes('.mp4') || img.url.includes('.mov') || img.url.includes('video');
+
+                if (isVideo) {
+                    const video = document.createElement('video');
+                    video.src = img.url;
+                    video.loop = true;
+                    video.muted = true;
+                    video.onclick = () => openModal(index);
+                    video.onerror = function() {
+                        this.style.display = 'none';
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'image-loader';
+                        errorDiv.textContent = '❌';
+                        item.appendChild(errorDiv);
+                    };
+                    item.appendChild(video);
+                } else {
+                    const image = document.createElement('img');
+                    image.src = img.url;
+                    image.loading = 'lazy';
+                    image.onclick = () => openModal(index);
+                    image.onerror = function() {
+                        this.style.display = 'none';
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'image-loader';
+                        errorDiv.textContent = '❌';
+                        item.appendChild(errorDiv);
+                    };
+                    item.appendChild(image);
+                }
 
                 const badge = document.createElement('div');
                 badge.className = 'badge';
                 badge.textContent = img.icon;
-
-                item.appendChild(image);
                 item.appendChild(badge);
 
-                // Кнопка удаления только для каталога пользователей
                 if (img.catalogId === 'users') {
                     const deleteBtn = document.createElement('div');
                     deleteBtn.className = 'delete-badge';
@@ -691,15 +772,31 @@
             currentModalIndex = index;
             const modal = document.getElementById('image-modal');
             const modalImg = document.getElementById('modal-image');
+            const modalVideo = document.getElementById('modal-video');
             const modalUsername = document.getElementById('modal-username');
             const modalCatalog = document.getElementById('modal-catalog');
             const modalAvatar = document.getElementById('modal-avatar');
             const counter = document.getElementById('modal-counter');
             const position = document.getElementById('modal-position');
+            const fallback = document.getElementById('modal-fallback');
+
+            modalImg.style.display = 'none';
+            modalVideo.style.display = 'none';
+            fallback.style.display = 'none';
 
             const currentImage = currentImages[index];
+            const isVideo = currentImage.url.includes('.mp4') || currentImage.url.includes('.mov') || currentImage.url.includes('video');
 
-            modalImg.src = currentImage.url;
+            if (isVideo) {
+                modalVideo.src = currentImage.url;
+                modalVideo.style.display = 'block';
+                modalVideo.load();
+                modalVideo.play().catch(e => console.log('Autoplay failed:', e));
+            } else {
+                modalImg.src = currentImage.url;
+                modalImg.style.display = 'block';
+            }
+
             modalUsername.textContent = currentImage.catalog;
             modalCatalog.textContent = currentImage.catalog;
             modalAvatar.textContent = currentImage.icon;
@@ -711,7 +808,10 @@
         }
 
         function closeModal() {
-            document.getElementById('image-modal').classList.remove('active');
+            const modal = document.getElementById('image-modal');
+            const modalVideo = document.getElementById('modal-video');
+            modalVideo.pause();
+            modal.classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
